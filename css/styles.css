@@ -1,0 +1,65 @@
+/* Estilos generales */
+body{
+    display: flex;
+    flex-direction: column;
+}
+
+header,
+footer{
+    background-color: rgb(19, 19, 51);
+    color: white;
+}
+
+
+/* Estilos de la cabecera: */
+header{
+    margin: 0 auto;
+    width: 80vw;
+}
+
+#logo img{
+    width: 20px;
+}
+
+/* Estilos generales del cuerpo: */
+main{
+    margin: 0 auto;
+    width: 80vw;
+    border: 3px solid rgb(19, 19, 51);
+    box-sizing: border-box;
+}
+
+/* Estilos de la barra de navegación: */
+nav ul {
+    list-style-type: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+nav li {
+    display: inline;
+    background-color: rgb(19, 19, 51);
+    color: white;
+    padding: 6px 50px;
+    box-sizing: border-box;
+}
+
+/* Estilos del contenido: */
+#container,
+#history{
+    margin: 0 auto;
+    width: 500px;
+    padding: 10px;
+    border: 3px solid rgb(19, 19, 51);
+    box-sizing: border-box;
+}
+
+/* Estilos del pie de página: */
+footer{
+    margin: 0 auto;
+    width: 80vw;
+    padding: 10px;
+    box-sizing: border-box;
+}
