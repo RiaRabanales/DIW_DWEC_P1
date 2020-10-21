@@ -66,16 +66,22 @@ nav li {
 }
 
 #calculadora > div{
-    border: 2px solid var(--main-color);
-    min-height: 3.3rem;
+    border: 3px solid var(--main-color);
+    min-height: 1rem;
     margin-top: 1rem;
 }
 
-#calculadora > .resultados{
+#calculadora > .operaciones{
     cursor: none;
     background-color: var(--secondary-color);
     text-align: right;
-    padding-right: 1em;
+    padding: 0.8em;
+}
+
+#calculadora > #resultados{
+    cursor: none;
+    background-color: var(--secondary-color);
+    padding: 0.5em;
 }
 
 #botonera{
