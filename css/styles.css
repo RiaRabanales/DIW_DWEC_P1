@@ -1,4 +1,10 @@
 /* Estilos generales */
+
+:root{
+    --main-color: rgb(33, 33, 88);
+    --secondary-color: rgb(202, 202, 224);
+}
+
 body{
     display: flex;
     flex-direction: column;
@@ -6,10 +12,11 @@ body{
 
 header,
 footer{
-    background-color: rgb(19, 19, 51);
+    background-color: var(--main-color);
     color: white;
+    display: grid;
+    grid-template-columns: repeat (3, 1fr);
 }
-
 
 /* Estilos de la cabecera: */
 header{
@@ -25,7 +32,7 @@ header{
 main{
     margin: 0 auto;
     width: 80vw;
-    border: 3px solid rgb(19, 19, 51);
+    border: 3px solid var(--main-color);
     box-sizing: border-box;
 }
 
@@ -40,20 +47,42 @@ nav ul {
 
 nav li {
     display: inline;
-    background-color: rgb(19, 19, 51);
+    background-color: var(--main-color);
     color: white;
     padding: 6px 50px;
     box-sizing: border-box;
 }
 
 /* Estilos del contenido: */
-#container,
-#history{
+#calculadora{
     margin: 0 auto;
-    width: 500px;
+    margin-top: 20px;
+    margin-bottom: 10px;
     padding: 10px;
-    border: 3px solid rgb(19, 19, 51);
+    border: 3px solid var(--main-color);
     box-sizing: border-box;
+    width: 30vw;
+}
+
+#calculadora > div {
+    background: rgba(var(--secondary-color), 0.8);      /* TODO: revisar por qué no sale */
+    border: 2px solid var(--main-color);
+    min-height: 30px;
+    margin-top: 5px;
+}
+
+#botonera{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr;
+    grid-gap: 1rem;
+    text-align: center;
+    padding: 2rem;
+}
+
+#botonera > .boton{
+    border: 1px solid var(--main-color);
+    background: #ffffff;
 }
 
 /* Estilos del pie de página: */
