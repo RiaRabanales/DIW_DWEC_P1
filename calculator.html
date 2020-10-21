@@ -9,7 +9,7 @@
     <script src="js/scripts.js"></script>
 </head>
 
-<body>
+<body onload="cargarEventos()">
     <header>
         <div id="logo">
             <img src="images/calcApp-logo.jpg" alt="logo" />
@@ -27,13 +27,13 @@
             </ul>
         </nav>
         <div id="calculadora">
-            <div id="operando"></div>
-            <div id="operador"></div>
+            <div class="resultados" id="operacion"></div>
+            <div class="resultados" id="operando"><p>0</p></div>
             <div id="botonera">
                 <div class="boton" id="botonPorcentaje">%</div>
-                <div class="boton" id="botonLimpiar">CE</div>
-                <div class="boton" id="botonBorrar">C</div>
-                <div class="boton" id="botonAtras">BK</div>
+                <div class="boton" id="botonCe">CE</div>
+                <div class="boton" id="botonC">C</div>
+                <div class="boton" id="botonBk">BK</div>
                 <div class="boton" id="botonUnoEntre">1/x</div>
                 <div class="boton" id="botonCuadrado">x2</div>
                 <div class="boton" id="botonRaiz">sqr</div>
@@ -55,7 +55,7 @@
                 <div class="boton" id="botonDecimal">.</div>
                 <div class="boton" id="botonigual">=</div>
             </div>
-            <div id="historial"></div>
+            <div class="resultados" id="historial"></div>
         </div>
     </main>
 

@@ -2,7 +2,7 @@
 
 :root{
     --main-color: rgb(33, 33, 88);
-    --secondary-color: rgb(202, 202, 224);
+    --secondary-color: rgb(230, 230, 243);
 }
 
 body{
@@ -51,6 +51,7 @@ nav li {
     color: white;
     padding: 6px 50px;
     box-sizing: border-box;
+    cursor: pointer;
 }
 
 /* Estilos del contenido: */
@@ -64,11 +65,17 @@ nav li {
     width: 30vw;
 }
 
-#calculadora > div {
-    background: rgba(var(--secondary-color), 0.8);      /* TODO: revisar por qué no sale */
+#calculadora > div{
     border: 2px solid var(--main-color);
-    min-height: 30px;
-    margin-top: 5px;
+    min-height: 3.3rem;
+    margin-top: 1rem;
+}
+
+#calculadora > .resultados{
+    cursor: none;
+    background-color: var(--secondary-color);
+    text-align: right;
+    padding-right: 1em;
 }
 
 #botonera{
@@ -83,6 +90,14 @@ nav li {
 #botonera > .boton{
     border: 1px solid var(--main-color);
     background: #ffffff;
+    padding: 0.7em;
+}
+
+#botonera > .boton:hover{
+    border: 1px solid var(--secondary-color);
+    background-color: var(--main-color);
+    color: #ffffff;
+    cursor: pointer;
 }
 
 /* Estilos del pie de página: */
