@@ -9,7 +9,6 @@ function addToOperand(text){        //TODO: ¿me interesa ponerle un default vac
         clearOperand();
         clearOperation();
         document.getElementById('operacion').innerHTML = operation;
-        console.log('HE ENTRADO SEEH');
     }
     operand += text;
     document.getElementById("operando").innerHTML = operand;
@@ -20,7 +19,12 @@ function clearOperand(){
 }
 
 function backtrackOperand(){
-    //TODO
+    //TODO comprobar
+    operand = operand.slice(0, -1); 
+    if (operand == '') {
+        operand = 0;
+    }
+    document.getElementById("operando").innerHTML = operand;
 }
 
 function addToOperation(text){
@@ -47,6 +51,7 @@ function solveOperation(){
     operation += ' = ';
     try {
         result = eval(operationMath);
+        //TODO que salga coma y no punto
     } catch (err) {
         console.log(err.message);
         result = 'ERROR';
@@ -76,6 +81,8 @@ function cargarEventos(){
     var var9 = document.getElementById('boton9');
     var var0 = document.getElementById('boton0');
 
+    var varDecimal = document.getElementById('botonDecimal');
+
     var varSuma = document.getElementById('botonSuma');
     var varResta = document.getElementById('botonResta');
     var varMultiplicacion = document.getElementById('botonMultiplicacion');
@@ -92,6 +99,8 @@ function cargarEventos(){
     var8.addEventListener('click', function(){addToOperand('8')});
     var9.addEventListener('click', function(){addToOperand('9')});
     var0.addEventListener('click', function(){addToOperand('0')});
+
+    varDecimal.addEventListener('click', function(){addToOperand(',')});
 
     varSuma.addEventListener('click', function(){addToOperation(' + ')});
     varResta.addEventListener('click', function(){addToOperation(' - ')});
