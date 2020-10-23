@@ -27,15 +27,44 @@ function backtrackOperand(){
     document.getElementById("operando").innerHTML = operand;
 }
 
+function performC(){
+    //TODO comprobar
+    clearOperand();
+    clearOperation();
+    document.getElementById("operando").innerHTML = operand;
+    document.getElementById("operacion").innerHTML = operation;
+}
+
+function performCe(){
+    clearOperand();
+    document.getElementById("operando").innerHTML = operand;
+    if (isNumber(operation.slice(-1))){
+        //TODO comprobar q me elimine el ultimo término numérico
+        //TODO: q pasa si es un = ????
+        while (isNumber(operation.slice(-1))){
+            operation = operation.slice(-1);
+        }
+        document.getElementById("operacion").innerHTML = operation;
+    }
+}
+
 function addToOperation(text){
     if (operation.includes('=')) {
         clearOperand();
         operation = result;
         document.getElementById('operacion').innerHTML = operation;
-        console.log('HE ENTRADO SEEH');
+    } 
+    if (text == '^2'){
+        operation += '('
+        operation += operand;
+        operation += ' * ';
+        operation += operand;
+        operation += ')'
+    } else {
+        operation += operand;
+        operation += text;
     }
-    operation += operand;
-    operation += text;
+    
     document.getElementById('operacion').innerHTML = operation;
     clearOperand();
 }
@@ -66,6 +95,17 @@ function editHistory(lastOperation){
     document.getElementById('historial').innerHTML += (lastOperation + '<br>');
 }
 
+//Estas funciones me muestran una calculadora o la otra:
+function mostrarCalculadoraNumeros(){
+    document.getElementById('calculadoraNumeros').style.display = "inline-block";
+    document.getElementById('calculadoraFechas').style.display = "none";
+}
+
+function mostrarCalculadoraFechas(){
+    document.getElementById('calculadoraFechas').style.display = "inline-block";
+    document.getElementById('calculadoraNumeros').style.display = "none";
+}
+
 
 //esta es la función básica de carga de eventos. cambiar si entro con jquery?? preguntar
 function cargarEventos(){
@@ -89,6 +129,14 @@ function cargarEventos(){
     var varDivision = document.getElementById('botonDivision');
     var varIgual = document.getElementById('botonIgual');
 
+    var varCuadrado = document.getElementById('botonCuadrado');
+    var varRaiz = document.getElementById('botonRaiz');
+    var varModulo = document.getElementById('botonModulo');
+
+    var varBacktrack = document.getElementById('botonBk');
+    var varC = document.getElementById('botonC');
+    var varCe = document.getElementById('botonCe');
+
     var1.addEventListener('click', function(){addToOperand('1')});
     var2.addEventListener('click', function(){addToOperand('2')});
     var3.addEventListener('click', function(){addToOperand('3')});
@@ -108,9 +156,18 @@ function cargarEventos(){
     varDivision.addEventListener('click', function(){addToOperation(' / ')});
     varIgual.addEventListener('click', function(){solveOperation()});
 
+    varCuadrado.addEventListener('click', function(){addToOperation('^2')});
+    varModulo.addEventListener('click', function(){addToOperation(' % ')});
+
+    varBacktrack.addEventListener('click', function(){backtrackOperand()});
+    varCe.addEventListener('click', function(){performCe()});
+    varC.addEventListener('click', function(){performC()});         //TODO ACABAR
 
     //TODO X2, SQR
-    //TODO CE, C, BK
     //TODO MOD, DIV
 
+    //Aquí controlo la vista de cada elemento:
+    document.getElementById('botonCalculadoraNumeros').addEventListener('click', function(){mostrarCalculadoraNumeros()});
+    document.getElementById('botonCalculadoraFechas').addEventListener('click', function(){mostrarCalculadoraFechas()});
+    //NO ME VA EL DISPLAY?????
 }

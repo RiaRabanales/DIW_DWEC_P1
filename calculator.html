@@ -1,71 +1,81 @@
 <!DOCTYPE html>
 
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Maria Rabanales - Pràctica 1</title>
     <link rel="stylesheet" type="text/css" href="css/styles.css" />
     <script src="js/scripts.js"></script>
-</head>
+  </head>
 
-<body onload="cargarEventos()">
-    <header>
-        <div id="logo">
-            <img src="images/calcApp-logo.jpg" alt="logo" />
-        </div>
-        <div>
-            <h1 id="title">MI CALCULADORA</h1>
-        </div>
+  <body onload="cargarEventos()">
+    <header class="notMobile">
+      <div class="notMobile" id="logo">
+        <img class="notMobile" src="images/calcApp-logo.jpg" alt="logo" />
+      </div>
+      <div class="notMobile">
+        <h1 class="notMobile">MI CALCULADORA</h1>
+      </div>
     </header>
 
     <main>
-        <nav>
-            <ul>
-                <li>STANDARD</li>
-                <li>DATE</li>
-            </ul>
-        </nav>
-        <div id="calculadora">
-            <div class="operaciones" id="operacion"></div>
-            <div class="operaciones" id="operando">0</div>
-            <div id="botonera">
-                <div class="boton" id="botonCuadrado">x2</div>
-                <div class="boton" id="botonCe">CE</div>
-                <div class="boton" id="botonC">C</div>
-                <div class="boton" id="botonBk">BK</div>
-                <div class="boton" id="botonRaiz">sqr</div>
-                <div class="boton" id="botonModulo">MOD</div>
-                <div class="boton" id="botonDivisionEntera">DIV</div>
-                <div class="boton" id="botonDivision">/</div>
-                <div class="boton" id="boton7">7</div>
-                <div class="boton" id="boton8">8</div>
-                <div class="boton" id="boton9">9</div>
-                <div class="boton" id="botonMultiplicacion">x</div>
-                <div class="boton" id="boton4">4</div> 
-                <div class="boton" id="boton5">5</div>
-                <div class="boton" id="boton6">6</div>
-                <div class="boton" id="botonResta">-</div>
-                <div class="boton" id="boton1">1</div>
-                <div class="boton" id="boton2">2</div>
-                <div class="boton" id="boton3">3</div>
-                <div class="boton" id="botonSuma">+</div>
-                <div class="boton" id="botonSigno">+-</div>
-                <div class="boton" id="boton0">0</div>
-                <div class="boton" id="botonDecimal">,</div>
-                <div class="boton" id="botonIgual">=</div>
-            </div>
-            <div id="resultados">
-                <h3>Historial de operaciones:</h3>
-                <p id="historial"></p>
-            </div>
+      <nav>
+        <ul>
+          <li id="botonCalculadoraFechas">DATE</li>
+          <li id="botonCalculadoraNumeros">STANDARD</li>
+        </ul>
+      </nav>
+      <div id="calculadora">
+        <div id="calculadoraNumeros">
+          <div class="operaciones" id="operacion"></div>
+          <div class="operaciones" id="operando">0</div>
+          <div id="botonera">
+            <div class="boton" id="botonCuadrado">^2</div>
+            <div class="boton" id="botonC">C</div>
+            <div class="boton" id="botonCe">CE</div>
+            <div class="boton" id="botonBk">BK</div>
+            <div class="boton" id="botonRaiz">sqr</div>
+            <div class="boton" id="botonModulo">MOD</div>
+            <div class="boton" id="botonDivisionEntera">DIV</div>
+            <div class="boton" id="botonDivision">/</div>
+            <div class="boton" id="boton7">7</div>
+            <div class="boton" id="boton8">8</div>
+            <div class="boton" id="boton9">9</div>
+            <div class="boton" id="botonMultiplicacion">x</div>
+            <div class="boton" id="boton4">4</div>
+            <div class="boton" id="boton5">5</div>
+            <div class="boton" id="boton6">6</div>
+            <div class="boton" id="botonResta">-</div>
+            <div class="boton" id="boton1">1</div>
+            <div class="boton" id="boton2">2</div>
+            <div class="boton" id="boton3">3</div>
+            <div class="boton" id="botonSuma">+</div>
+            <div class="boton" id="botonSigno">+-</div>
+            <div class="boton" id="boton0">0</div>
+            <div class="boton" id="botonDecimal">,</div>
+            <div class="boton" id="botonIgual">=</div>
+          </div>
+          <div class="resultados">
+            <h3>Historial de operaciones</h3>
+            <p id="historial"></p>
+          </div>
         </div>
+        <div id="calculadoraFechas">
+          <div class="operaciones"></div>
+          <div class="resultados">
+            <h3>Historial de operaciones</h3>
+            <p></p>
+          </div>
+        </div>
+      </div>
     </main>
 
-    <footer>
-        <p>Autor: Maria Rabanales <span>©2020</span></p>
-        <a href="https://github.com/RiaRabanales/DIW_DWEC_P1">Código en GITHUB</a>
+    <footer class="notMobile">
+      <p class="notMobile">Autor: Maria Rabanales ©2020</p>
+      <a href="https://github.com/RiaRabanales/DIW_DWEC_P1" class="notMobile"
+        >Código en GITHUB</a
+      >
     </footer>
-</body>
-
+  </body>
 </html>
