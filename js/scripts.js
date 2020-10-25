@@ -60,6 +60,12 @@ function addToOperation(text){
         operation += ' * ';
         operation += operand;
         operation += ')'
+    } else if (text == 'sqrt'){
+        //TODO: que se vea bonito en calculadora
+        operand = Math.sqrt(operand);
+        operation += operand;
+        document.getElementById('operando').innerHTML = operand;
+        //TODO: controlar los decimales
     } else {
         operation += operand;
         operation += text;
@@ -77,10 +83,18 @@ function solveOperation(){
     operation += operand;
     let operationMath = operation.replace(/ /g, '');
     operationMath = operationMath.replace(/,/g, '.');
+    let divisionEntera = false;     //así puedo hacer el round
+    if (operationMath.includes('//')) {
+        operationMath = operationMath.replace(/\/\//, '/');
+        divisionEntera = true;
+    }
     operation += ' = ';
     try {
         result = eval(operationMath);
         //TODO que salga coma y no punto
+        if (divisionEntera){
+            result = Math.round(result); //TODO: eso me vale si sólo hay una operación y es esta
+        }
     } catch (err) {
         console.log(err.message);
         result = 'ERROR';
@@ -132,6 +146,7 @@ function cargarEventos(){
     var varCuadrado = document.getElementById('botonCuadrado');
     var varRaiz = document.getElementById('botonRaiz');
     var varModulo = document.getElementById('botonModulo');
+    var varDivisionEntera = document.getElementById('botonDivisionEntera');
 
     var varBacktrack = document.getElementById('botonBk');
     var varC = document.getElementById('botonC');
@@ -157,17 +172,16 @@ function cargarEventos(){
     varIgual.addEventListener('click', function(){solveOperation()});
 
     varCuadrado.addEventListener('click', function(){addToOperation('^2')});
-    varModulo.addEventListener('click', function(){addToOperation(' % ')});
+    varRaiz.addEventListener('click', function(){addToOperation('sqrt')});
+    varModulo.addEventListener('click', function(){addToOperation(' % ')}); //TODO: cambiar por MOD
+    varDivisionEntera.addEventListener('click', function(){addToOperation(' // ')});
 
     varBacktrack.addEventListener('click', function(){backtrackOperand()});
     varCe.addEventListener('click', function(){performCe()});
-    varC.addEventListener('click', function(){performC()});         //TODO ACABAR
-
-    //TODO X2, SQR
-    //TODO MOD, DIV
+    varC.addEventListener('click', function(){performC()});         //TODO ACABAR DE COMPROBAR
 
     //Aquí controlo la vista de cada elemento:
     document.getElementById('botonCalculadoraNumeros').addEventListener('click', function(){mostrarCalculadoraNumeros()});
     document.getElementById('botonCalculadoraFechas').addEventListener('click', function(){mostrarCalculadoraFechas()});
-    //NO ME VA EL DISPLAY?????
+    //Coge el display pero me cambia los atributos????
 }

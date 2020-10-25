@@ -183,6 +183,10 @@
   cursor: pointer;
 }
 
+.botonTooltip {
+  display: none;
+}
+
 #calculadoraFechas {
   display: none;
 }
