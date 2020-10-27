@@ -38,10 +38,13 @@ function performC(){
 function performCe(){
     clearOperand();
     document.getElementById("operando").innerHTML = operand;
-    if (isNumber(operation.slice(-1))){
+    if (operation.slice(-1) == '='){
+        //TODO: Esto no tiene sentido
+        //Si el último término es un =, quiero que actúe como un C:
+        performC();
+    } else if (operation.slice(-1).isInteger || operation.slice(-1) == ','){
         //TODO comprobar q me elimine el ultimo término numérico
-        //TODO: q pasa si es un = ????
-        while (isNumber(operation.slice(-1))){
+        while (operation.slice(-1).isInteger || operation.slice(-1) == ','){
             operation = operation.slice(-1);
         }
         document.getElementById("operacion").innerHTML = operation;
@@ -50,7 +53,6 @@ function performCe(){
 
 function addToOperation(text){
     if (operation.includes('=')) {
-        clearOperand();
         operation = result;
         document.getElementById('operacion').innerHTML = operation;
     } 
@@ -62,7 +64,8 @@ function addToOperation(text){
         operation += ')'
     } else if (text == 'sqrt'){
         //TODO: que se vea bonito en calculadora
-        operand = Math.sqrt(operand);
+        let sqrtResult = Math.sqrt(operand);
+        operand = sqrtResult.toString().replace(/\./g, ',');
         operation += operand;
         document.getElementById('operando').innerHTML = operand;
         //TODO: controlar los decimales
@@ -79,6 +82,18 @@ function clearOperation(){
     operation = '';
 }
 
+function changeSign(){
+    //TODO por ahora solo me añade (-...)
+    if (operand != '' && operand != '0'){
+        if (operation.includes('=')){
+            operation = '';
+        }
+        operand = '-' + operand;
+        document.getElementById('operando').innerHTML = operand;
+        operand = '(' + operand + ')';
+    }
+}
+
 function solveOperation(){
     operation += operand;
     let operationMath = operation.replace(/ /g, '');
@@ -91,7 +106,6 @@ function solveOperation(){
     operation += ' = ';
     try {
         result = eval(operationMath);
-        //TODO que salga coma y no punto
         if (divisionEntera){
             result = Math.round(result); //TODO: eso me vale si sólo hay una operación y es esta
         }
@@ -99,8 +113,9 @@ function solveOperation(){
         console.log(err.message);
         result = 'ERROR';
     }
+    operand = result.toString().replace(/\./g, ',');
     document.getElementById('operacion').innerHTML = operation;
-    document.getElementById('operando').innerHTML = result;
+    document.getElementById('operando').innerHTML = operand;
     editHistory(operation += result);
 }
 
@@ -111,12 +126,12 @@ function editHistory(lastOperation){
 
 //Estas funciones me muestran una calculadora o la otra:
 function mostrarCalculadoraNumeros(){
-    document.getElementById('calculadoraNumeros').style.display = "inline-block";
+    document.getElementById('calculadoraNumeros').style.display = "block";
     document.getElementById('calculadoraFechas').style.display = "none";
 }
 
 function mostrarCalculadoraFechas(){
-    document.getElementById('calculadoraFechas').style.display = "inline-block";
+    document.getElementById('calculadoraFechas').style.display = "block";
     document.getElementById('calculadoraNumeros').style.display = "none";
 }
 
@@ -152,6 +167,8 @@ function cargarEventos(){
     var varC = document.getElementById('botonC');
     var varCe = document.getElementById('botonCe');
 
+    var varSigno = document.getElementById('botonSigno');
+
     var1.addEventListener('click', function(){addToOperand('1')});
     var2.addEventListener('click', function(){addToOperand('2')});
     var3.addEventListener('click', function(){addToOperand('3')});
@@ -179,6 +196,8 @@ function cargarEventos(){
     varBacktrack.addEventListener('click', function(){backtrackOperand()});
     varCe.addEventListener('click', function(){performCe()});
     varC.addEventListener('click', function(){performC()});         //TODO ACABAR DE COMPROBAR
+
+    varSigno.addEventListener('click', function(){changeSign()});
 
     //Aquí controlo la vista de cada elemento:
     document.getElementById('botonCalculadoraNumeros').addEventListener('click', function(){mostrarCalculadoraNumeros()});
