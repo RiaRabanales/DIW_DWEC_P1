@@ -202,5 +202,41 @@ function cargarEventos(){
     //Aquí controlo la vista de cada elemento:
     document.getElementById('botonCalculadoraNumeros').addEventListener('click', function(){mostrarCalculadoraNumeros()});
     document.getElementById('botonCalculadoraFechas').addEventListener('click', function(){mostrarCalculadoraFechas()});
-    //Coge el display pero me cambia los atributos????
+    
+    //Datepickers:
+    $( function() {
+        $( "#datepicker1" ).datepicker();
+    } );
+
+    $( function() {
+        $( "#datepicker2" ).datepicker();
+    } );
+
+    //Aquí resuelvo el cálculo:
+    var varBotonFechas = document.getElementById('botonFechas');
+    varBotonFechas.addEventListener('click', function(){solveDates()});
+
+    function solveDates(){
+        var date = $("#selector").datepicker("getDate");
+
+        let fecha1 = $('#datepicker1').datepicker('getDate');
+        let fecha2 = $('#datepicker2').datepicker('getDate');
+        //Así da error: let fecha2 = (document.getElementById('datepicker2')).datepicker('getDate');
+
+        let fechaResult = fecha2 - fecha1;    //esto viene en milisegundos
+        fechaResult /= (1000 * 60 * 60 * 24);    //así me lo convierto a dias
+
+        //Y me reformateo las fechas para impresión:
+        fecha1 = $.datepicker.formatDate("mm/dd/yy", fecha1);
+        fecha2 = $.datepicker.formatDate("mm/dd/yy", fecha2);
+        let textoFechas = "De <b>" + fecha1 + "</b> a <b>" + fecha2 + "</b>  hay ";
+        if (fechaResult == 1 || fechaResult == -1) {
+            textoFechas += fechaResult + " día.";
+            document.getElementById('operacionFecha').innerHTML = fechaResult + ' día';
+        } else {
+            textoFechas += fechaResult + " días.";
+            document.getElementById('operacionFecha').innerHTML = fechaResult + ' días';
+        }   
+        document.getElementById('historialFechas').innerHTML += (textoFechas + '<br>');
+    }
 }

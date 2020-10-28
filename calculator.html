@@ -7,6 +7,15 @@
     <title>Maria Rabanales - Pràctica 1</title>
     <link rel="stylesheet" type="text/css" href="css/styles.css" />
     <script src="js/scripts.js"></script>
+
+    <!-- Datepicker: -->
+    <link
+      rel="stylesheet"
+      href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+    />
+    <link rel="stylesheet" href="/resources/demos/style.css" />
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   </head>
 
   <body onload="cargarEventos()">
@@ -37,8 +46,11 @@
             <div class="boton" id="botonBk">BK</div>
             <div class="boton" id="botonRaiz">√</div>
             <div class="boton" id="botonModulo">MOD</div>
-            <div class="boton" id="botonDivisionEntera">DIV
-              <span class="botonTooltip">DIV: división entera.<br>Representado por:  //</span>
+            <div class="boton" id="botonDivisionEntera">
+              DIV
+              <span class="botonTooltip"
+                >DIV: división entera.<br />Representado por: //</span
+              >
             </div>
             <div class="boton" id="botonDivision">/</div>
             <div class="boton" id="boton7">7</div>
@@ -64,10 +76,18 @@
           </div>
         </div>
         <div id="calculadoraFechas">
-          <div class="operaciones"></div>
+          <div class="operaciones" id="operacionFecha">
+            <span class="explicación">resultado en días</span>
+          </div>
+          <div class="operaciones">
+            <p>Primera fecha: <input type="text" id="datepicker1" /></p>
+            <p>Segunda fecha: <input type="text" id="datepicker2" /></p>
+            <p class="explicacion">Formato de las fechas: <b>MM/DD/AAAA</b></p>
+            <button id="botonFechas">CALCULAR</button>
+          </div>
           <div class="resultados">
             <h3>Historial de operaciones</h3>
-            <p></p>
+            <p id="historialFechas"></p>
           </div>
         </div>
       </div>
@@ -75,7 +95,9 @@
 
     <footer class="notMobile">
       <p class="notMobile">Autor: Maria Rabanales ©2020</p>
-      <a href="https://github.com/RiaRabanales/DIW_DWEC_P1" class="notMobile">Código en GITHUB</a>
+      <a href="https://github.com/RiaRabanales/DIW_DWEC_P1" class="notMobile"
+        >Código en GITHUB</a
+      >
     </footer>
   </body>
 </html>

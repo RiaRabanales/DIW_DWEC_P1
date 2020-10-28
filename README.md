@@ -15,7 +15,11 @@ María Rabanales González
 ## Consideraciones:
 
 ## Sobre el desarrollo de la práctica para DIW:
+#### Consideraciones generales:
+Para facilitar visualmente el desarrollo del trabajo con los diferentes medios, desde un primer momento se aprovechó el uso de variables en el documento de estilos .css para definir un set de colores distinto para cada tamaño de pantalla.
+
 //TODO completar
 
 ## Sobre el desarrollo de la práctica para DWEC:
+#### Consideraciones generales:
 //TODO completar
