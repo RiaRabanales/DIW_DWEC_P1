@@ -2,20 +2,29 @@ var operand = 0;
 var operation = '';
 var result = '';
 
+//TODO eval no me coge -
+
 function addToOperand(text){        //TODO: ¿me interesa ponerle un default vacío para los CE, C, etc?
     if (operand == 0 && text != ','){
         operand = '';
-    } else if (operation.includes('=')) {
+    } else if (checkIfPreviousOperation()) {
         clearOperand();
         clearOperation();
         document.getElementById('operacion').innerHTML = operation;
     }
     operand += text;
-    document.getElementById("operando").innerHTML = operand;
+    document.getElementById('operando').innerHTML = operand;
 }
 
 function clearOperand(){
     operand = '';
+}
+
+function checkIfPreviousOperation(){
+    if (operation.includes('=') || operation.includes('ERROR')) {
+        return true;
+    }
+    return false;
 }
 
 function backtrackOperand(){
@@ -52,9 +61,9 @@ function performCe(){
 }
 
 function addToOperation(text){
-    if (operation.includes('=')) {
-        operation = result;
-        document.getElementById('operacion').innerHTML = operation;
+    //TODO si lo cojo al principio, siendo el operando 0
+    if (checkIfPreviousOperation()) {
+        clearOperation();
     } 
     if (text == '^2'){
         operation += '('
@@ -64,11 +73,17 @@ function addToOperation(text){
         operation += ')'
     } else if (text == 'sqrt'){
         //TODO: que se vea bonito en calculadora
-        let sqrtResult = Math.sqrt(operand);
-        operand = sqrtResult.toString().replace(/\./g, ',');
-        operation += operand;
-        document.getElementById('operando').innerHTML = operand;
-        //TODO: controlar los decimales
+        if (operand >= 0) {
+            let sqrtResult = Math.sqrt(operand);
+            operand = sqrtResult.toString().replace(/\./g, ',');
+            operation += operand;
+            document.getElementById('operando').innerHTML = operand;
+        } else {
+            operation = 'sqrt(' + operand + ') =';
+            document.getElementById("operando").innerHTML = 'ERROR: raiz de número negativo';
+            editHistory('sqrt(' + operand + ') = ERROR: NaN');
+            operand = '';
+        }   
     } else {
         operation += operand;
         operation += text;
@@ -83,12 +98,16 @@ function clearOperation(){
 }
 
 function changeSign(){
-    //TODO por ahora solo me añade (-...)
+    //TODO por ahora solo me añade (-...) y me cambia - tras operación
     if (operand != '' && operand != '0'){
-        if (operation.includes('=')){
+        if (checkIfPreviousOperation()){
             operation = '';
         }
-        operand = '-' + operand;
+        if (operand.charAt(0) == '-'){
+            operand = operand.substring(1);
+        } else {
+            operand = '-' + operand;
+        }
         document.getElementById('operando').innerHTML = operand;
         operand = '(' + operand + ')';
     }
@@ -116,7 +135,7 @@ function solveOperation(){
     operand = result.toString().replace(/\./g, ',');
     document.getElementById('operacion').innerHTML = operation;
     document.getElementById('operando').innerHTML = operand;
-    editHistory(operation += result);
+    editHistory(operation + result);
 }
 
 function editHistory(lastOperation){
@@ -221,22 +240,26 @@ function cargarEventos(){
 
         let fecha1 = $('#datepicker1').datepicker('getDate');
         let fecha2 = $('#datepicker2').datepicker('getDate');
-        //Así da error: let fecha2 = (document.getElementById('datepicker2')).datepicker('getDate');
+        if (fecha1 && fecha2) {
+            //Así da error: let fecha2 = (document.getElementById('datepicker2')).datepicker('getDate');
+            let fechaResult = fecha2 - fecha1;    //esto viene en milisegundos
+            fechaResult /= (1000 * 60 * 60 * 24);    //así me lo convierto a dias
 
-        let fechaResult = fecha2 - fecha1;    //esto viene en milisegundos
-        fechaResult /= (1000 * 60 * 60 * 24);    //así me lo convierto a dias
-
-        //Y me reformateo las fechas para impresión:
-        fecha1 = $.datepicker.formatDate("mm/dd/yy", fecha1);
-        fecha2 = $.datepicker.formatDate("mm/dd/yy", fecha2);
-        let textoFechas = "De <b>" + fecha1 + "</b> a <b>" + fecha2 + "</b>  hay ";
-        if (fechaResult == 1 || fechaResult == -1) {
-            textoFechas += fechaResult + " día.";
-            document.getElementById('operacionFecha').innerHTML = fechaResult + ' día';
+            //Y me reformateo las fechas para impresión:
+            fecha1 = $.datepicker.formatDate("mm/dd/yy", fecha1);
+            fecha2 = $.datepicker.formatDate("mm/dd/yy", fecha2);
+            let textoFechas = "De <b>" + fecha1 + "</b> a <b>" + fecha2 + "</b>  hay ";
+            if (fechaResult == 1 || fechaResult == -1) {
+                textoFechas += fechaResult + " día.";
+                document.getElementById('operacionFecha').innerHTML = fechaResult + ' día';
+            } else {
+                textoFechas += fechaResult + " días.";
+                document.getElementById('operacionFecha').innerHTML = fechaResult + ' días';
+            }   
+            document.getElementById('historialFechas').innerHTML += (textoFechas + '<br>');
         } else {
-            textoFechas += fechaResult + " días.";
-            document.getElementById('operacionFecha').innerHTML = fechaResult + ' días';
-        }   
-        document.getElementById('historialFechas').innerHTML += (textoFechas + '<br>');
+            document.getElementById('operacionFecha').innerHTML = 'ERROR: falta fecha'
+        }
+        
     }
 }
