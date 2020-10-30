@@ -9,11 +9,8 @@
     <script src="js/scripts.js"></script>
 
     <!-- Datepicker: -->
-    <link
-      rel="stylesheet"
-      href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
-    />
-    <link rel="stylesheet" href="/resources/demos/style.css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+     <!-- Como me da error por ahora lo comento: <link rel="stylesheet" href="/resources/demos/style.css" /> -->
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   </head>
@@ -31,6 +28,7 @@
     <main>
       <nav>
         <ul>
+          <li id="botonCalculadoraHistorial">HISTORIAL</li>
           <li id="botonCalculadoraFechas">DATE</li>
           <li id="botonCalculadoraNumeros">STANDARD</li>
         </ul>
@@ -46,12 +44,7 @@
             <div class="boton" id="botonBk">BK</div>
             <div class="boton" id="botonRaiz">√</div>
             <div class="boton" id="botonModulo">MOD</div>
-            <div class="boton" id="botonDivisionEntera">
-              DIV
-              <span class="botonTooltip"
-                >DIV: división entera.<br />Representado por: //</span
-              >
-            </div>
+            <div class="boton" id="botonDivisionEntera">DIV</div>
             <div class="boton" id="botonDivision">/</div>
             <div class="boton" id="boton7">7</div>
             <div class="boton" id="boton8">8</div>
@@ -70,7 +63,7 @@
             <div class="boton" id="botonDecimal">,</div>
             <div class="boton" id="botonIgual">=</div>
           </div>
-          <div class="resultados">
+          <div class="resultados notMobile" id="divHistorial">
             <h3>Historial de operaciones</h3>
             <p id="historial"></p>
           </div>
@@ -85,7 +78,7 @@
             <p class="explicacion">Formato de las fechas: <b>MM/DD/AAAA</b></p>
             <button id="botonFechas"><b>CALCULAR</b></button>
           </div>
-          <div class="resultados">
+          <div class="resultados notMobile" id="divHistorialFechas">
             <h3>Historial de operaciones</h3>
             <p id="historialFechas"></p>
           </div>

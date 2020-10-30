@@ -139,7 +139,7 @@ function solveOperation(){
 }
 
 function editHistory(lastOperation){
-    //TODO: mejorar la muestra de esto
+    //TODO: mejorar la muestra de esto: que me incluya las últimas operaciones no al final sino al principio
     document.getElementById('historial').innerHTML += (lastOperation + '<br>');
 }
 
@@ -147,15 +147,25 @@ function editHistory(lastOperation){
 function mostrarCalculadoraNumeros(){
     document.getElementById('calculadoraNumeros').style.display = "block";
     document.getElementById('calculadoraFechas').style.display = "none";
+    //Con esto me garantizo que siempre me muestre el historial en tamaño ordenador
+    //No es absolutamente necesario pero me facilita las pruebas.
+    let windowSize = window.matchMedia("(min-width: 1025px)");
+    if (windowSize.matches) {
+        document.getElementById('divHistorial').style.display = "block";
+    }
 }
 
 function mostrarCalculadoraFechas(){
     document.getElementById('calculadoraFechas').style.display = "block";
     document.getElementById('calculadoraNumeros').style.display = "none";
+    let windowSize = window.matchMedia("(min-width: 1025px)");
+    if (windowSize.matches) {
+        document.getElementById('divHistorialFechas').style.display = "block";
+    }
 }
 
 
-//esta es la función básica de carga de eventos. cambiar si entro con jquery?? preguntar
+//Esta es la función básica de carga de eventos.
 function cargarEventos(){
 
     var var1 = document.getElementById('boton1');
@@ -259,7 +269,27 @@ function cargarEventos(){
             document.getElementById('historialFechas').innerHTML += (textoFechas + '<br>');
         } else {
             document.getElementById('operacionFecha').innerHTML = 'ERROR: falta fecha'
-        }
-        
+        }  
     }
+
+    //Aquí controlo que se muestre el historial a través de su botón, que sólo se mostrará en movil y tablet.
+    var varBotonHistorial = document.getElementById('botonCalculadoraHistorial');
+    varBotonHistorial.addEventListener('click', function(){showHistory()});
+
+    function showHistory(){
+        if (document.getElementById('calculadoraNumeros').style.display != "none"){
+            if (document.getElementById('divHistorial').style.display != "block"){
+                document.getElementById('divHistorial').style.display = "block";
+            } else {
+                document.getElementById('divHistorial').style.display = "none";
+            }
+        } else {
+            if (document.getElementById('divHistorialFechas').style.display != "block"){
+                document.getElementById('divHistorialFechas').style.display = "block";
+            } else {
+                document.getElementById('divHistorialFechas').style.display = "none";
+            }
+        }
+    }
+
 }
