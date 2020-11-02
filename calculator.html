@@ -16,6 +16,7 @@
   </head>
 
   <body onload="cargarEventos()">
+    <!-- Cabecera -->
     <header class="notMobile">
       <div class="notMobile" id="logo">
         <img class="notMobile" src="images/calcApp-logo.png" alt="logo" />
@@ -26,6 +27,7 @@
     </header>
 
     <main>
+      <!-- Barra de navegación -->
       <nav>
         <ul>
           <li id="botonCalculadoraHistorial">HISTORIAL</li>
@@ -33,7 +35,9 @@
           <li id="botonCalculadoraNumeros">STANDARD</li>
         </ul>
       </nav>
+      
       <div id="calculadora">
+        <!-- Calculadora numérica -->
         <div id="calculadoraNumeros">
           <div class="operaciones" id="operacion"></div>
           <div class="operaciones" id="operando">0</div>
@@ -68,13 +72,14 @@
             <p id="historial"></p>
           </div>
         </div>
+        <!-- Calculadora de fechas -->
         <div id="calculadoraFechas">
           <div class="operaciones" id="operacionFecha">
             <span class="explicacion">resultado en días</span>
           </div>
           <div class="operaciones">
-            <p>Primera fecha: <input type="text" id="datepicker1" /></p>
-            <p>Segunda fecha: <input type="text" id="datepicker2" /></p>
+            <p>Desde: <input type="text" id="datepicker1" /></p>
+            <p>Hasta: <input type="text" id="datepicker2" /></p>
             <p class="explicacion">Formato de las fechas: <b>MM/DD/AAAA</b></p>
             <button id="botonFechas"><b>CALCULAR</b></button>
           </div>
@@ -86,11 +91,10 @@
       </div>
     </main>
 
+    <!-- Pie de página -->
     <footer class="notMobile">
       <p class="notMobile">Autor: Maria Rabanales ©2020</p>
-      <a href="https://github.com/RiaRabanales/DIW_DWEC_P1" class="notMobile"
-        >Código en GITHUB</a
-      >
+      <a href="https://github.com/RiaRabanales/DIW_DWEC_P1" class="notMobile">Código en GITHUB</a>
     </footer>
   </body>
 </html>

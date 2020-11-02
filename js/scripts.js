@@ -1,9 +1,14 @@
-var operand = 0;
-var operation = '';
-var result = '';
+//TODO: modificar el menú para que me salga en vertical en medio tamaño
+//TODO que si le doy a = el operando me aparezca en negrita
+//TODO formatear las fechas segun el enunciado
+//TODO Si la primera data és posterior a la primera data, mostrarà un missatge d’error
+//TODO inicio de doc con jsdoc
 
-//TODO eval no me coge -
-
+/**
+ * Toma un valor numérico y lo añade al string del operando.
+ * Si procede, limpia antes el operador o el operando.
+ * @param {int} text 
+ */
 function addToOperand(text){        //TODO: ¿me interesa ponerle un default vacío para los CE, C, etc?
     if (operand == 0 && text != ','){
         operand = '';
@@ -16,10 +21,17 @@ function addToOperand(text){        //TODO: ¿me interesa ponerle un default vac
     document.getElementById('operando').innerHTML = operand;
 }
 
+/**
+ * Limpia el operando.
+ */
 function clearOperand(){
     operand = '';
 }
 
+/**
+ * Comprueba si existe una operación previa guardada en memoria.
+ * @returns {boolean} true si existe, false si no
+ */
 function checkIfPreviousOperation(){
     if (operation.includes('=') || operation.includes('ERROR')) {
         return true;
@@ -27,8 +39,11 @@ function checkIfPreviousOperation(){
     return false;
 }
 
+/**
+ * Borra el último elemento del operando, si este es un número.
+ */
 function backtrackOperand(){
-    //TODO comprobar
+    //TODO comprobar + que borre el símbolo si el operando está vacío
     operand = operand.slice(0, -1); 
     if (operand == '') {
         operand = 0;
@@ -36,14 +51,20 @@ function backtrackOperand(){
     document.getElementById("operando").innerHTML = operand;
 }
 
+/**
+ * Realiza la operación de la tecla C: borra operador y operando.
+ */
 function performC(){
-    //TODO comprobar
+    //TODO comprobar + que el operando se ponga en 0
     clearOperand();
     clearOperation();
     document.getElementById("operando").innerHTML = operand;
     document.getElementById("operacion").innerHTML = operation;
 }
 
+/**
+ * Realiza la operación de la tecla CE: borra último número introducido.
+ */
 function performCe(){
     clearOperand();
     document.getElementById("operando").innerHTML = operand;
@@ -60,6 +81,10 @@ function performCe(){
     }
 }
 
+/**
+ * Recibe una orden, la procesa y la añade a la operación.
+ * @param {string} text 
+ */
 function addToOperation(text){
     //TODO si lo cojo al principio, siendo el operando 0
     if (checkIfPreviousOperation()) {
@@ -93,10 +118,16 @@ function addToOperation(text){
     clearOperand();
 }
 
+/**
+ * Limpia el operador.
+ */
 function clearOperation(){
     operation = '';
 }
 
+/**
+ * Realiza el cambio de signo: añade () alrededor del número modificado.
+ */
 function changeSign(){
     //TODO por ahora solo me añade (-...) y me cambia - tras operación
     if (operand != '' && operand != '0'){
@@ -113,6 +144,10 @@ function changeSign(){
     }
 }
 
+/**
+ * Resuelve la operación cuando se pulsa la tecla =.
+ * Llama al historial para que refleje la operación.
+ */
 function solveOperation(){
     operation += operand;
     let operationMath = operation.replace(/ /g, '');
@@ -128,9 +163,12 @@ function solveOperation(){
         if (divisionEntera){
             result = Math.round(result); //TODO: eso me vale si sólo hay una operación y es esta
         }
+        if (result = Infinity){
+            result = 'ERROR: operación no válida';
+        }
     } catch (err) {
         console.log(err.message);
-        result = 'ERROR';
+        result = 'ERROR: sintaxis incorrecta';
     }
     operand = result.toString().replace(/\./g, ',');
     document.getElementById('operacion').innerHTML = operation;
@@ -138,12 +176,18 @@ function solveOperation(){
     editHistory(operation + result);
 }
 
+/**
+ * Añade la última operación al historial y lo muestra por pantalla.
+ * @param {String} lastOperation refleja la operación que se quiere añadir.
+ */
 function editHistory(lastOperation){
     //TODO: mejorar la muestra de esto: que me incluya las últimas operaciones no al final sino al principio
     document.getElementById('historial').innerHTML += (lastOperation + '<br>');
 }
 
-//Estas funciones me muestran una calculadora o la otra:
+/**
+ * Muestra la calculadora de números cuando se selecciona en la barra de navegación.
+ */
 function mostrarCalculadoraNumeros(){
     document.getElementById('calculadoraNumeros').style.display = "block";
     document.getElementById('calculadoraFechas').style.display = "none";
@@ -155,6 +199,9 @@ function mostrarCalculadoraNumeros(){
     }
 }
 
+/**
+ * Muestra la calculadora de fechas cuando se selecciona en la barra de navegación.
+ */
 function mostrarCalculadoraFechas(){
     document.getElementById('calculadoraFechas').style.display = "block";
     document.getElementById('calculadoraNumeros').style.display = "none";
@@ -164,9 +211,65 @@ function mostrarCalculadoraFechas(){
     }
 }
 
+/**
+ * Resuelve el cálculo de fechas.
+ */
+function solveDates(){
+    var date = $("#selector").datepicker("getDate");
 
-//Esta es la función básica de carga de eventos.
+    let fecha1 = $('#datepicker1').datepicker('getDate');
+    let fecha2 = $('#datepicker2').datepicker('getDate');
+    if (fecha1 && fecha2) {
+        //Así da error: let fecha2 = (document.getElementById('datepicker2')).datepicker('getDate');
+        let fechaResult = fecha2 - fecha1;    //esto viene en milisegundos
+        fechaResult /= (1000 * 60 * 60 * 24);    //así me lo convierto a dias
+
+        //Y me reformateo las fechas para impresión:
+        fecha1 = $.datepicker.formatDate("dd/mm/yy", fecha1);
+        fecha2 = $.datepicker.formatDate("dd/mm/yy", fecha2);
+        let textoFechas = "De <b>" + fecha1 + "</b> a <b>" + fecha2 + "</b>  hay ";
+        if (fechaResult == 1){
+            textoFechas += fechaResult + " día.";
+            document.getElementById('operacionFecha').innerHTML = fechaResult + ' día';
+        } else if (fechaResult < 0){
+            textoFechas = "ERROR: hasta anterior a desde<br>(en " + fecha1 + " - " + fecha2 + ")";
+        } else {
+            textoFechas += fechaResult + " días.";
+            document.getElementById('operacionFecha').innerHTML = fechaResult + ' días';
+        }   
+        document.getElementById('historialFechas').innerHTML += (textoFechas + '<br><br>');
+    } else {
+        document.getElementById('operacionFecha').innerHTML = 'ERROR: falta fecha'
+    }  
+}
+
+/**
+ * Muestra el historial (tanto numérico como de fechas) cuando se selecciona por barra de navegación.
+ */
+function showHistory(){
+    if (document.getElementById('calculadoraNumeros').style.display != "none"){
+        if (document.getElementById('divHistorial').style.display != "block"){
+            document.getElementById('divHistorial').style.display = "block";
+        } else {
+            document.getElementById('divHistorial').style.display = "none";
+        }
+    } else {
+        if (document.getElementById('divHistorialFechas').style.display != "block"){
+            document.getElementById('divHistorialFechas').style.display = "block";
+        } else {
+            document.getElementById('divHistorialFechas').style.display = "none";
+        }
+    }
+}
+
+/**
+ * Función básica que toma las variables del DOM y asigna eventos.
+ */
 function cargarEventos(){
+    //TODO: modificar todo para q estas variables no estén fuera de funciones
+    var operand = 0;
+    var operation = '';
+    var result = '';
 
     var var1 = document.getElementById('boton1');
     var var2 = document.getElementById('boton2');
@@ -245,51 +348,8 @@ function cargarEventos(){
     var varBotonFechas = document.getElementById('botonFechas');
     varBotonFechas.addEventListener('click', function(){solveDates()});
 
-    function solveDates(){
-        var date = $("#selector").datepicker("getDate");
-
-        let fecha1 = $('#datepicker1').datepicker('getDate');
-        let fecha2 = $('#datepicker2').datepicker('getDate');
-        if (fecha1 && fecha2) {
-            //Así da error: let fecha2 = (document.getElementById('datepicker2')).datepicker('getDate');
-            let fechaResult = fecha2 - fecha1;    //esto viene en milisegundos
-            fechaResult /= (1000 * 60 * 60 * 24);    //así me lo convierto a dias
-
-            //Y me reformateo las fechas para impresión:
-            fecha1 = $.datepicker.formatDate("mm/dd/yy", fecha1);
-            fecha2 = $.datepicker.formatDate("mm/dd/yy", fecha2);
-            let textoFechas = "De <b>" + fecha1 + "</b> a <b>" + fecha2 + "</b>  hay ";
-            if (fechaResult == 1 || fechaResult == -1) {
-                textoFechas += fechaResult + " día.";
-                document.getElementById('operacionFecha').innerHTML = fechaResult + ' día';
-            } else {
-                textoFechas += fechaResult + " días.";
-                document.getElementById('operacionFecha').innerHTML = fechaResult + ' días';
-            }   
-            document.getElementById('historialFechas').innerHTML += (textoFechas + '<br>');
-        } else {
-            document.getElementById('operacionFecha').innerHTML = 'ERROR: falta fecha'
-        }  
-    }
-
     //Aquí controlo que se muestre el historial a través de su botón, que sólo se mostrará en movil y tablet.
     var varBotonHistorial = document.getElementById('botonCalculadoraHistorial');
     varBotonHistorial.addEventListener('click', function(){showHistory()});
-
-    function showHistory(){
-        if (document.getElementById('calculadoraNumeros').style.display != "none"){
-            if (document.getElementById('divHistorial').style.display != "block"){
-                document.getElementById('divHistorial').style.display = "block";
-            } else {
-                document.getElementById('divHistorial').style.display = "none";
-            }
-        } else {
-            if (document.getElementById('divHistorialFechas').style.display != "block"){
-                document.getElementById('divHistorialFechas').style.display = "block";
-            } else {
-                document.getElementById('divHistorialFechas').style.display = "none";
-            }
-        }
-    }
 
 }
