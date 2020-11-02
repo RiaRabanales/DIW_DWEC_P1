@@ -1,39 +1,61 @@
+/**
+ * Código que muestra y controla las calculadoras.
+ * @author Maria Rabanales
+ */
+
+//TODO: modificar todo para q estas variables no estén fuera de funciones
+var operando = 0;
+var operacion = '';
+
 //TODO: modificar el menú para que me salga en vertical en medio tamaño
 //TODO que si le doy a = el operando me aparezca en negrita
 //TODO formatear las fechas segun el enunciado
-//TODO Si la primera data és posterior a la primera data, mostrarà un missatge d’error
-//TODO inicio de doc con jsdoc
+//TODO: si cambio de signo luego no puedo continuar metiendo números
+//TODO: 0 inicial; q pasa si meto +-, si meto , , si meto numero, y si meto operador basico
+//TODO: q no pueda ponerse , al final
+//TODO: ¿me interesa ponerle un default vacío para los CE, C, etc?
+//TODO: comprobar eval 2,3 - coma
 
 /**
  * Toma un valor numérico y lo añade al string del operando.
  * Si procede, limpia antes el operador o el operando.
- * @param {int} text 
+ * @param {int} texto 
  */
-function addToOperand(text){        //TODO: ¿me interesa ponerle un default vacío para los CE, C, etc?
-    if (operand == 0 && text != ','){
-        operand = '';
-    } else if (checkIfPreviousOperation()) {
-        clearOperand();
-        clearOperation();
-        document.getElementById('operacion').innerHTML = operation;
+function agregarValor(texto){        
+    if (operando == 0 && texto != ','){
+        operando = '';
+    } else if (comprobarSiOperacionPrevia()) {
+        limpiarOperando();
+        limpiarOperacion();
+        if (texto == ','){
+            operando = 0;
+        }
+        document.getElementById('operacion').innerHTML = operacion;
     }
-    operand += text;
-    document.getElementById('operando').innerHTML = operand;
+    operando += texto;
+    document.getElementById('operando').innerHTML = operando;
 }
 
 /**
- * Limpia el operando.
+ * Toma un operando, comprueba que no sea decimal, y llama a agregarValor().
+ * Si ya es decimal muestra el error y lo añade al historial.
  */
-function clearOperand(){
-    operand = '';
+function agregarDecimal(){
+    if (comprobarDecimal(operando)){
+        agregarValor(',');
+    } else {
+        operando = 'ERROR: ' + operando + ' ya es decimal';
+        editarHistorial(operando);
+    } 
+    document.getElementById('operando').innerHTML = operando;
 }
 
 /**
  * Comprueba si existe una operación previa guardada en memoria.
  * @returns {boolean} true si existe, false si no
  */
-function checkIfPreviousOperation(){
-    if (operation.includes('=') || operation.includes('ERROR')) {
+function comprobarSiOperacionPrevia(){
+    if (operacion.includes('=') || operacion.includes('ERROR')) {
         return true;
     }
     return false;
@@ -42,105 +64,112 @@ function checkIfPreviousOperation(){
 /**
  * Borra el último elemento del operando, si este es un número.
  */
-function backtrackOperand(){
+function borrar(){
     //TODO comprobar + que borre el símbolo si el operando está vacío
-    operand = operand.slice(0, -1); 
-    if (operand == '') {
-        operand = 0;
+    operando = operando.slice(0, -1); 
+    if (operando == '') {
+        operando = 0;
     }
-    document.getElementById("operando").innerHTML = operand;
+    document.getElementById("operando").innerHTML = operando;
 }
 
 /**
  * Realiza la operación de la tecla C: borra operador y operando.
  */
-function performC(){
+function borrarC(){
     //TODO comprobar + que el operando se ponga en 0
-    clearOperand();
-    clearOperation();
-    document.getElementById("operando").innerHTML = operand;
-    document.getElementById("operacion").innerHTML = operation;
+    limpiarOperando();
+    limpiarOperacion();
+    document.getElementById("operando").innerHTML = operando;
+    document.getElementById("operacion").innerHTML = operacion;
 }
 
 /**
  * Realiza la operación de la tecla CE: borra último número introducido.
  */
-function performCe(){
-    clearOperand();
-    document.getElementById("operando").innerHTML = operand;
-    if (operation.slice(-1) == '='){
+function borrarCe(){
+    limpiarOperando();
+    document.getElementById("operando").innerHTML = operando;
+    if (operacion.slice(-1) == '='){
         //TODO: Esto no tiene sentido
         //Si el último término es un =, quiero que actúe como un C:
-        performC();
-    } else if (operation.slice(-1).isInteger || operation.slice(-1) == ','){
+        borrarC();
+    } else if (operacion.slice(-1).isInteger || operacion.slice(-1) == ','){
         //TODO comprobar q me elimine el ultimo término numérico
-        while (operation.slice(-1).isInteger || operation.slice(-1) == ','){
-            operation = operation.slice(-1);
+        while (operacion.slice(-1).isInteger || operacion.slice(-1) == ','){
+            operacion = operacion.slice(-1);
         }
-        document.getElementById("operacion").innerHTML = operation;
+        document.getElementById("operacion").innerHTML = operacion;
     }
 }
 
 /**
  * Recibe una orden, la procesa y la añade a la operación.
- * @param {string} text 
+ * @param {string} texto 
  */
-function addToOperation(text){
+function agregarOperacion(texto){
     //TODO si lo cojo al principio, siendo el operando 0
-    if (checkIfPreviousOperation()) {
-        clearOperation();
+    if (comprobarSiOperacionPrevia()) {
+        limpiarOperacion();
     } 
-    if (text == '^2'){
-        operation += '('
-        operation += operand;
-        operation += ' * ';
-        operation += operand;
-        operation += ')'
-    } else if (text == 'sqrt'){
+    if (texto == '^2'){
+        operacion += '('
+        operacion += operando;
+        operacion += ' * ';
+        operacion += operando;
+        operacion += ')'
+    } else if (texto == 'sqrt'){
         //TODO: que se vea bonito en calculadora
-        if (operand >= 0) {
-            let sqrtResult = Math.sqrt(operand);
-            operand = sqrtResult.toString().replace(/\./g, ',');
-            operation += operand;
-            document.getElementById('operando').innerHTML = operand;
+        if (operando >= 0) {
+            let sqrtResult = Math.sqrt(operando);
+            operando = sqrtResult.toString().replace(/\./g, ',');
+            operacion += operando;
+            document.getElementById('operando').innerHTML = operando;
         } else {
-            operation = 'sqrt(' + operand + ') =';
+            operacion = 'sqrt(' + operando + ') =';
             document.getElementById("operando").innerHTML = 'ERROR: raiz de número negativo';
-            editHistory('sqrt(' + operand + ') = ERROR: NaN');
-            operand = '';
+            editarHistorial('sqrt(' + operando + ') = ERROR: NaN');
+            operando = '';
         }   
     } else {
-        operation += operand;
-        operation += text;
+        operacion += operando;
+        operacion += texto;
     }
     
-    document.getElementById('operacion').innerHTML = operation;
-    clearOperand();
+    document.getElementById('operacion').innerHTML = operacion;
+    limpiarOperando();
 }
 
 /**
- * Limpia el operador.
+ * Limpia la operación.
  */
-function clearOperation(){
-    operation = '';
+function limpiarOperacion(){
+    operacion = '';
+}
+
+/**
+ * Limpia el operando.
+ */
+function limpiarOperando(){
+    operando = '';
 }
 
 /**
  * Realiza el cambio de signo: añade () alrededor del número modificado.
  */
-function changeSign(){
+function cambiarSigno(){
     //TODO por ahora solo me añade (-...) y me cambia - tras operación
-    if (operand != '' && operand != '0'){
-        if (checkIfPreviousOperation()){
-            operation = '';
+    if (operando != '' && operando != '0'){
+        if (comprobarSiOperacionPrevia()){
+            operacion = '';
         }
-        if (operand.charAt(0) == '-'){
-            operand = operand.substring(1);
+        if (operando.charAt(0) == '-'){
+            operando = operando.substring(1);
         } else {
-            operand = '-' + operand;
+            operando = '-' + operando;
         }
-        document.getElementById('operando').innerHTML = operand;
-        operand = '(' + operand + ')';
+        document.getElementById('operando').innerHTML = operando;
+        operando = '(' + operando + ')';
     }
 }
 
@@ -148,41 +177,54 @@ function changeSign(){
  * Resuelve la operación cuando se pulsa la tecla =.
  * Llama al historial para que refleje la operación.
  */
-function solveOperation(){
-    operation += operand;
-    let operationMath = operation.replace(/ /g, '');
-    operationMath = operationMath.replace(/,/g, '.');
+function resolverOperacion(){
+    let resultado;
+    operacion += operando;
+    let operacionMath = operacion.replace(/ /g, '');
+    operacionMath = operacionMath.replace(/,/g, '.');
     let divisionEntera = false;     //así puedo hacer el round
-    if (operationMath.includes('//')) {
-        operationMath = operationMath.replace(/\/\//, '/');
+    if (operacionMath.includes('//')) {
+        operacionMath = operacionMath.replace(/\/\//, '/');
         divisionEntera = true;
     }
-    operation += ' = ';
+    operacion += ' = ';
     try {
-        result = eval(operationMath);
+        resultado = eval(operacionMath);
         if (divisionEntera){
-            result = Math.round(result); //TODO: eso me vale si sólo hay una operación y es esta
+            resultado = Math.round(resultado); //TODO: eso me vale si sólo hay una operación y es esta
         }
-        if (result = Infinity){
-            result = 'ERROR: operación no válida';
+        if (resultado == Infinity){
+            resultado = 'ERROR: operación no válida';
         }
     } catch (err) {
         console.log(err.message);
-        result = 'ERROR: sintaxis incorrecta';
+        resultado = 'ERROR: sintaxis incorrecta';
     }
-    operand = result.toString().replace(/\./g, ',');
-    document.getElementById('operacion').innerHTML = operation;
-    document.getElementById('operando').innerHTML = operand;
-    editHistory(operation + result);
+    operando = resultado.toString().replace(/\./g, ',');
+    document.getElementById('operacion').innerHTML = operacion;
+    document.getElementById('operando').innerHTML = operando;
+    editarHistorial(operacion + resultado);
+}
+
+/**
+ * Comprueba si un valor es decimal, es decir, tiene o no una ','.
+ * @param {string} texto 
+ * @return true si no es ya decimal, false si lo es.
+ */
+function comprobarDecimal(texto){
+    if (texto.includes(',')) {
+        return false;
+    }
+    return true;
 }
 
 /**
  * Añade la última operación al historial y lo muestra por pantalla.
- * @param {String} lastOperation refleja la operación que se quiere añadir.
+ * @param {String} ultimaOperacion refleja la operación que se quiere añadir.
  */
-function editHistory(lastOperation){
+function editarHistorial(ultimaOperacion){
     //TODO: mejorar la muestra de esto: que me incluya las últimas operaciones no al final sino al principio
-    document.getElementById('historial').innerHTML += (lastOperation + '<br>');
+    document.getElementById('historial').innerHTML += (ultimaOperacion + '<br>');
 }
 
 /**
@@ -214,7 +256,7 @@ function mostrarCalculadoraFechas(){
 /**
  * Resuelve el cálculo de fechas.
  */
-function solveDates(){
+function resolverFechas(){
     var date = $("#selector").datepicker("getDate");
 
     let fecha1 = $('#datepicker1').datepicker('getDate');
@@ -237,7 +279,7 @@ function solveDates(){
             textoFechas += fechaResult + " días.";
             document.getElementById('operacionFecha').innerHTML = fechaResult + ' días';
         }   
-        document.getElementById('historialFechas').innerHTML += (textoFechas + '<br><br>');
+        document.getElementById('historialFechas').innerHTML += (textoFechas + '<br>');
     } else {
         document.getElementById('operacionFecha').innerHTML = 'ERROR: falta fecha'
     }  
@@ -246,7 +288,7 @@ function solveDates(){
 /**
  * Muestra el historial (tanto numérico como de fechas) cuando se selecciona por barra de navegación.
  */
-function showHistory(){
+function mostrarHistorial(){
     if (document.getElementById('calculadoraNumeros').style.display != "none"){
         if (document.getElementById('divHistorial').style.display != "block"){
             document.getElementById('divHistorial').style.display = "block";
@@ -266,10 +308,6 @@ function showHistory(){
  * Función básica que toma las variables del DOM y asigna eventos.
  */
 function cargarEventos(){
-    //TODO: modificar todo para q estas variables no estén fuera de funciones
-    var operand = 0;
-    var operation = '';
-    var result = '';
 
     var var1 = document.getElementById('boton1');
     var var2 = document.getElementById('boton2');
@@ -301,35 +339,35 @@ function cargarEventos(){
 
     var varSigno = document.getElementById('botonSigno');
 
-    var1.addEventListener('click', function(){addToOperand('1')});
-    var2.addEventListener('click', function(){addToOperand('2')});
-    var3.addEventListener('click', function(){addToOperand('3')});
-    var4.addEventListener('click', function(){addToOperand('4')});
-    var5.addEventListener('click', function(){addToOperand('5')});
-    var6.addEventListener('click', function(){addToOperand('6')});
-    var7.addEventListener('click', function(){addToOperand('7')});
-    var8.addEventListener('click', function(){addToOperand('8')});
-    var9.addEventListener('click', function(){addToOperand('9')});
-    var0.addEventListener('click', function(){addToOperand('0')});
+    var1.addEventListener('click', function(){agregarValor('1')});
+    var2.addEventListener('click', function(){agregarValor('2')});
+    var3.addEventListener('click', function(){agregarValor('3')});
+    var4.addEventListener('click', function(){agregarValor('4')});
+    var5.addEventListener('click', function(){agregarValor('5')});
+    var6.addEventListener('click', function(){agregarValor('6')});
+    var7.addEventListener('click', function(){agregarValor('7')});
+    var8.addEventListener('click', function(){agregarValor('8')});
+    var9.addEventListener('click', function(){agregarValor('9')});
+    var0.addEventListener('click', function(){agregarValor('0')});
 
-    varDecimal.addEventListener('click', function(){addToOperand(',')});
+    varDecimal.addEventListener('click', function(){agregarDecimal()});
 
-    varSuma.addEventListener('click', function(){addToOperation(' + ')});
-    varResta.addEventListener('click', function(){addToOperation(' - ')});
-    varMultiplicacion.addEventListener('click', function(){addToOperation(' * ')});
-    varDivision.addEventListener('click', function(){addToOperation(' / ')});
-    varIgual.addEventListener('click', function(){solveOperation()});
+    varSuma.addEventListener('click', function(){agregarOperacion(' + ')});
+    varResta.addEventListener('click', function(){agregarOperacion(' - ')});
+    varMultiplicacion.addEventListener('click', function(){agregarOperacion(' * ')});
+    varDivision.addEventListener('click', function(){agregarOperacion(' / ')});
+    varIgual.addEventListener('click', function(){resolverOperacion()});
 
-    varCuadrado.addEventListener('click', function(){addToOperation('^2')});
-    varRaiz.addEventListener('click', function(){addToOperation('sqrt')});
-    varModulo.addEventListener('click', function(){addToOperation(' % ')}); //TODO: cambiar por MOD
-    varDivisionEntera.addEventListener('click', function(){addToOperation(' // ')});
+    varCuadrado.addEventListener('click', function(){agregarOperacion('^2')});
+    varRaiz.addEventListener('click', function(){agregarOperacion('sqrt')});
+    varModulo.addEventListener('click', function(){agregarOperacion(' % ')}); //TODO: cambiar por MOD
+    varDivisionEntera.addEventListener('click', function(){agregarOperacion(' // ')});
 
-    varBacktrack.addEventListener('click', function(){backtrackOperand()});
-    varCe.addEventListener('click', function(){performCe()});
-    varC.addEventListener('click', function(){performC()});         //TODO ACABAR DE COMPROBAR
+    varBacktrack.addEventListener('click', function(){borrar()});
+    varCe.addEventListener('click', function(){borrarCe()});
+    varC.addEventListener('click', function(){borrarC()});         //TODO ACABAR DE COMPROBAR
 
-    varSigno.addEventListener('click', function(){changeSign()});
+    varSigno.addEventListener('click', function(){cambiarSigno()});
 
     //Aquí controlo la vista de cada elemento:
     document.getElementById('botonCalculadoraNumeros').addEventListener('click', function(){mostrarCalculadoraNumeros()});
@@ -346,10 +384,10 @@ function cargarEventos(){
 
     //Aquí resuelvo el cálculo:
     var varBotonFechas = document.getElementById('botonFechas');
-    varBotonFechas.addEventListener('click', function(){solveDates()});
+    varBotonFechas.addEventListener('click', function(){resolverFechas()});
 
     //Aquí controlo que se muestre el historial a través de su botón, que sólo se mostrará en movil y tablet.
     var varBotonHistorial = document.getElementById('botonCalculadoraHistorial');
-    varBotonHistorial.addEventListener('click', function(){showHistory()});
+    varBotonHistorial.addEventListener('click', function(){mostrarHistorial()});
 
 }
