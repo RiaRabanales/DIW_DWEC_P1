@@ -22,6 +22,8 @@ El diseño de esta práctica se ha basado en un concepto minimalista y de colore
 
 Para facilitar visualmente el desarrollo del trabajo con los diferentes medios, desde un primer momento se aprovechó el uso de variables en el documento de estilos .css para definir un set de colores distinto para cada tamaño de pantalla. Los tamaños de las diferentes resoluciones se han planteado de forma aproximada partiendo de la siguiente guía: https://www.templatemonster.com/blog/css-media-queries-for-all-devices-and-browsers-including-ie7-and-ie8/
 
+Siguiendo los requisitos del enunciado, se ha incluído un icono de FontAwesome para el link a GitHub, y se ha cambiado la fuente del texto; se ha optado por Open Sans de Google Chrome.
+
 La calculadora en sí se ha planteado a través de un 'grid', con lo que su desarrollo ha resultado multivista y relativamente rápido. Las decisiones visuales que han definido las diferencias entre los medios han afectado básicamente a tres grupos de elementos: la cabecera y pie de página, el historial de operaciones, y el menú o barra de navegación.
 
 #### Cabecera y pie de página
