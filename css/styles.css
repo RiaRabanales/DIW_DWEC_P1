@@ -246,6 +246,7 @@
     box-sizing: border-box;
     border-radius: 20px;
     max-width: 30vw;
+    box-sizing: border-box;
   }
 }
 
@@ -261,13 +262,17 @@
   cursor: none;
   background-color: var(--secondary-color);
   text-align: right;
-  padding: 0.8rem;
+  padding: 0.5rem;
+  padding-right: 1rem;
+  min-height: 3rem;
+  box-sizing: border-box;
 }
 
 #calculadoraNumeros > .resultados {
   cursor: none;
   background-color: var(--secondary-color);
   padding: 0.5rem;
+  box-sizing: border-box;
 }
 
 #botonera {
@@ -276,6 +281,7 @@
   grid-gap: 0.7rem;
   text-align: center;
   padding: 1.3rem;
+  box-sizing: border-box;
 }
 
 #botonera > .boton {

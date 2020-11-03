@@ -22,12 +22,21 @@ El diseño de esta práctica se ha basado en un concepto minimalista y de colore
 
 Para facilitar visualmente el desarrollo del trabajo con los diferentes medios, desde un primer momento se aprovechó el uso de variables en el documento de estilos .css para definir un set de colores distinto para cada tamaño de pantalla. Los tamaños de las diferentes resoluciones se han planteado de forma aproximada partiendo de la siguiente guía: https://www.templatemonster.com/blog/css-media-queries-for-all-devices-and-browsers-including-ie7-and-ie8/
 
-Siguiendo los requisitos del enunciado, se ha incluído un icono de FontAwesome para el link a GitHub, y se ha cambiado la fuente del texto; se ha optado por Open Sans de Google Chrome.
+Siguiendo los requisitos del enunciado, se ha incluído un icono de FontAwesome para el link a GitHub, y se ha cambiado la fuente del texto; se ha optado por Open Sans de Google Chrome. Respecto al resto de requisitos generales se pueden señalar los siguientes:
 
-La calculadora en sí se ha planteado a través de un 'grid', con lo que su desarrollo ha resultado multivista y relativamente rápido. Las decisiones visuales que han definido las diferencias entre los medios han afectado básicamente a tres grupos de elementos: la cabecera y pie de página, el historial de operaciones, y el menú o barra de navegación.
+* El cuerpo de la página se ha centrado horizontalmente (a través del estilo 'margin: 0 auto') y no ocupa en ningún caso el total de la pantalla.
+* El layout básico de la página se ha creado con flexbox, dirección columna: afecta a cabecera, cuerpo y pie de página.
+* Tanto la cabecera como el pie de página tienen a su vez display: flex, lo que permite controlar mejor la posición de sus subelementos.
+* La calculadora numérica en sí tiene una botonera creada con grid.
+
+Las decisiones visuales que han definido las diferencias entre los medios han afectado básicamente a tres grupos de elementos: la cabecera y pie de página, el historial de operaciones, y el menú o barra de navegación.
 
 #### Cabecera y pie de página
 Estos elementos sólo se muestran en resoluciones medianas y grandes (es decir, para pantallas de tablets y ordenadores). En móviles están ocultos.
+
+La cabecera incluye la imagen aportada inicialmente por el enunciado (redondeada ya que el fondo no es transparente, y estéticamente queda mejor) y el nombre de la aplicación.
+
+El pie de página muestra a la izquierda el nombre del autor, y a la derecha el link a Github, con un icono adecuado.
 
 ### Historial
 El elemento historial siempre es visible en pantallas de ordenador, ya que las considero lo suficientemente amplias para que pueda verse sin problema y sin necesidad de realizar excesivo 'scrolling'. En el enunciado se indica que se muestre a la izquierda o debajo de la propia calculadora; dado que se ha considerado que resulta visualmente agradable y facilita la concentración que al mismo nivel de la calculadora no se vea más que fondo de pantalla se ha decidido colocar el historial debajo. Comienza indicando sólo el título del container, y se va completando con las diferentes operaciones.
@@ -44,7 +53,18 @@ Para ordenadores el menú sólo tiene dos opciones: las de los tipos de calculad
 Para tablets y móviles el menú incluye también el botón que muestra u oculta el historial. Estéticamente el menú de tablets es casi idéntico al de ordenadores, pero el de móviles es muy diferente: el menú pasa a ocupar la posición de la cabecera. Si bien en el diseño original se planteaba colocarlo en dos líneas, en el diseño final de esta calculadora plantear un 'display: flex' con 'wrap' en dos líneas ocupaba demasiado espacio del disponible en una pantalla tan pequeña. Por este motivo se ha decidido colocarlo en una única línea.
 
 ### Calculadora numérica:
-//TODO completar
+La calculadora tiene cuatro elementos: dos superiores (operación y operando) que muestran valores o cadenas de valores si procede, una botonera central, y un historial en la parte inferior. Se sitúa en el centro de la pantalla y sólo ocupa una fracción del cuerpo: hacerla más ancha resultaba levemente incómodo al tener que desplazar demasiado el ratón para avanzar de botón en botón.
+
+Lo más interesante en este apartado es la botonera: es un grid de tamaño 4 x 6 que muestra todas las opciones de la calculadora, desde introducción de números hasta operaciones matemáticas y de borrado. Se ha definido a través de los estilos css de la siguiente manera:
+
+#botonera {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 0.7rem;
+  text-align: center;
+  padding: 1.3rem;
+  box-sizing: border-box;
+}
 
 ### Calculadora de fechas:
 El formato de la calculadora de fechas se ha modificado un poco respecto a lo descrito en el enunciado, si bien los elementos básicos (el formato de las fechas, la existencia de un historial, la casilla de resultados) se mantienen. La principal diferencia es que en el enunciado se indica que "A sota, se calcularà la diferència entre les dates cada vegada que l’usuari canviï una de les dues dates"; en lugar de colocar la diferencia en la parte inferior, se ha posicionado en la parte inferior, en un recuadro de soluciones que pretende imitar el estilo de la calculadora numérica. De esta manera se separan claramente el elemento historial y el resultado de la operación.
@@ -77,6 +97,8 @@ Inicialmente aparece un 0 en la casilla de operando, pero se sustituye por la pr
 
 La función resolverOperacion() se ejecuta como evento del botón '='. Esta función calcula el resultado de la operación con eval(), y sustituye el contenido del operando por el resultado. Si se ha producido algún error (por ejemplo, al dividir entre 0), se da información sobre el error en lugar del resultado. A continuación la función llama al historial, e incluye en este la operación realizada con su resultado.
 
+Como detalle, cuando se pulsa el botón '=' el resultado o error aparece en negrita en la casilla de operando.
+
 Existen tres teclas de borrado: //TODO COMPLETAR
 * BK: borrado básico.
 * C:
@@ -84,7 +106,7 @@ Existen tres teclas de borrado: //TODO COMPLETAR
 
 En la botonera, aparte de los botones de contenido numérico, de las teclas de borrado y de las operaciones básicas (+, -, *, /, =), pueden encontrarse los siguientes botones:
 
-* ,: permite la introducción de decimales. Como mejora se ha introducido que si un número ya es decimal, al introducir otra coma salte un error.
+* ,: permite la introducción de decimales. Como mejoras se ha introducido que si un número ya es decimal salte un error al introducir otra coma, y que salte un error si hay un número con una coma pero sin decimales detrás.
 * DIV: división de enteros (a diferencia de '/', que devuelve decimales). Para calcularla se emplea la función round().
 * MOD: módulo o resto de una división.
 * √: raiz cuadrada, que se evalúa con sqr(), del inglés 'square root'.
@@ -109,5 +131,6 @@ Si bien estas mejoras se han descrito en los apartados correspondientes, incluyo
 * Tecla MOD para el módulo o resto de una división.
 * Tecla √ para raíz cuadrada.
 * Error por introducir una segunda ',' en un valor ya decimal.
+* Error por introducir una coma ',' al final de un número, sin decimales detrás.
 * Tratamiento del 'historial' según la resolución de pantalla.
 * Error por falta de fecha (desde o hasta) en la calculadora numérica.

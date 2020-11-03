@@ -3,18 +3,15 @@
  * @author Maria Rabanales
  */
 
-//TODO: modificar todo para q estas variables no estén fuera de funciones
+//TODO: modificar para q estas variables no estén fuera de funciones
 var operando = 0;
 var operacion = '';
 
 //TODO: modificar el menú para que me salga en vertical en medio tamaño
-//TODO que si le doy a = el operando me aparezca en negrita
 //TODO formatear las fechas segun el enunciado
 //TODO: si cambio de signo luego no puedo continuar metiendo números
 //TODO: 0 inicial; q pasa si meto +-, si meto , , si meto numero, y si meto operador basico
-//TODO: q no pueda ponerse , al final
 //TODO: ¿me interesa ponerle un default vacío para los CE, C, etc?
-//TODO: comprobar eval 2,3 - coma
 
 /**
  * Toma un valor numérico y lo añade al string del operando.
@@ -189,12 +186,16 @@ function resolverOperacion(){
     }
     operacion += ' = ';
     try {
-        resultado = eval(operacionMath);
-        if (divisionEntera){
-            resultado = Math.round(resultado); //TODO: eso me vale si sólo hay una operación y es esta
-        }
-        if (resultado == Infinity){
-            resultado = 'ERROR: operación no válida';
+        if (operacion.includes(', ')){
+            resultado = 'ERROR: coma sin decimales detrás';     //Para garantizar que no se calcula nada con num,
+        } else {
+            resultado = eval(operacionMath);
+            if (divisionEntera){
+                resultado = Math.round(resultado); //TODO: eso me vale si sólo hay una operación y es esta
+            }
+            if (resultado == Infinity){
+                resultado = 'ERROR: operación no válida';
+            }
         }
     } catch (err) {
         console.log(err.message);
@@ -202,8 +203,8 @@ function resolverOperacion(){
     }
     operando = resultado.toString().replace(/\./g, ',');
     document.getElementById('operacion').innerHTML = operacion;
-    document.getElementById('operando').innerHTML = operando;
-    editarHistorial(operacion + resultado);
+    document.getElementById('operando').innerHTML = '<b>' + operando + '</b>';
+    editarHistorial(operacion + operando);
 }
 
 /**
@@ -275,9 +276,10 @@ function resolverFechas(){
             document.getElementById('operacionFecha').innerHTML = fechaResult + ' día';
         } else if (fechaResult < 0){
             textoFechas = "ERROR: hasta anterior a desde<br>(en " + fecha1 + " - " + fecha2 + ")";
+            document.getElementById('operacionFecha').innerHTML = 'ERROR: hasta anterior a desde'
         } else {
             textoFechas += fechaResult + " días.";
-            document.getElementById('operacionFecha').innerHTML = fechaResult + ' días';
+            document.getElementById('operacionFecha').innerHTML = '<b>' + fechaResult + '</b> días';
         }   
         document.getElementById('historialFechas').innerHTML += (textoFechas + '<br>');
     } else {
