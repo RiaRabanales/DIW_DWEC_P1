@@ -18,7 +18,8 @@
     box-sizing: border-box;
   }
 
-  .notMobile {
+  .notMobile,
+  .fa-bars {
     display: none;
   }
 
@@ -109,6 +110,17 @@
   }
 
   /* Estilos de la barra de navegación: */
+  #menuBasico {
+    display: none;
+  }
+
+  .fa-bars {
+    float: right;
+    margin-right: 0.4rem;
+    margin-top: -2.4rem;
+    color: white;
+  }
+
   nav ul {
     list-style-type: none;
     border: none;
@@ -232,6 +244,7 @@
     box-sizing: border-box;
   }
 
+  .fa-bars,
   #botonCalculadoraHistorial {
     display: none;
   }

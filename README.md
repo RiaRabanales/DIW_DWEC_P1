@@ -56,7 +56,6 @@ Para tablets y móviles el menú incluye también el botón que muestra u oculta
 La calculadora tiene cuatro elementos: dos superiores (operación y operando) que muestran valores o cadenas de valores si procede, una botonera central, y un historial en la parte inferior. Se sitúa en el centro de la pantalla y sólo ocupa una fracción del cuerpo: hacerla más ancha resultaba levemente incómodo al tener que desplazar demasiado el ratón para avanzar de botón en botón.
 
 Lo más interesante en este apartado es la botonera: es un grid de tamaño 4 x 6 que muestra todas las opciones de la calculadora, desde introducción de números hasta operaciones matemáticas y de borrado. Se ha definido a través de los estilos css de la siguiente manera:
-
 #botonera {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -65,6 +64,8 @@ Lo más interesante en este apartado es la botonera: es un grid de tamaño 4 x 6
   padding: 1.3rem;
   box-sizing: border-box;
 }
+
+Siguiendo las instrucciones del enunciado, tanto la apariencia de los botones como la forma del puntero cambia con 'hover', al pasar el ratón por encima: el botón se oscurece al color principal, y la letra pasa a ser blanca.
 
 ### Calculadora de fechas:
 El formato de la calculadora de fechas se ha modificado un poco respecto a lo descrito en el enunciado, si bien los elementos básicos (el formato de las fechas, la existencia de un historial, la casilla de resultados) se mantienen. La principal diferencia es que en el enunciado se indica que "A sota, se calcularà la diferència entre les dates cada vegada que l’usuari canviï una de les dues dates"; en lugar de colocar la diferencia en la parte inferior, se ha posicionado en la parte inferior, en un recuadro de soluciones que pretende imitar el estilo de la calculadora numérica. De esta manera se separan claramente el elemento historial y el resultado de la operación.
@@ -99,14 +100,14 @@ La función resolverOperacion() se ejecuta como evento del botón '='. Esta func
 
 Como detalle, cuando se pulsa el botón '=' el resultado o error aparece en negrita en la casilla de operando.
 
-Existen tres teclas de borrado: //TODO COMPLETAR
-* BK: borrado básico.
-* C:
-* CE: 
+Existen tres teclas de borrado, que se inspiran en su uso en la calculadora de Windows y no exactamente en el enunciado:
+* BK: borrado básico por la función 'borrar()'. Borra la última cifra de la casilla de operando (si no se ha introducido un operador básico después). Como esta cifra todavía no se ha trasladado a la casilla de operación, la casilla de operación permanece igual. Si sólo había un valor único en el operando, lo cambia por un 0.
+* CE: borrado parcial por la función 'borrarCE()'. Borra el operando completo de la casilla de operando, a diferencia del borrado simple que sólo elimina la última cifra del operando; como esta cifra todavía no se ha trasladado a la casilla de operación, la casilla de operación permanece igual. Como excepción, si lo último que se ha introducido es un "=", quiero que opere como la tecla C y borre todo.
+* C: borrado completo por la función 'borrarC()'. Borra todo el contenido de las casillas de operando y operación.
 
 En la botonera, aparte de los botones de contenido numérico, de las teclas de borrado y de las operaciones básicas (+, -, *, /, =), pueden encontrarse los siguientes botones:
 
-* ,: permite la introducción de decimales. Como mejoras se ha introducido que si un número ya es decimal salte un error al introducir otra coma, y que salte un error si hay un número con una coma pero sin decimales detrás.
+* ,: permite la introducción de decimales con la función 'agregarDecimal()'. Si hay un 0 en el operador, no lo sustituye sino que añade la coma después. Como mejoras se ha introducido que si un número ya es decimal salte un error al introducir otra coma, y que salte un error si hay un número con una coma pero sin decimales detrás.
 * DIV: división de enteros (a diferencia de '/', que devuelve decimales). Para calcularla se emplea la función round().
 * MOD: módulo o resto de una división.
 * √: raiz cuadrada, que se evalúa con sqr(), del inglés 'square root'.
