@@ -1,5 +1,5 @@
 /**
- * Código que muestra y controla las calculadoras.
+ * Código que muestra y controla la aplicación de las calculadoras.
  * @author Maria Rabanales
  */
 
@@ -343,6 +343,17 @@ function mostrarHistorial() {
 }
 
 /**
+ * Muestra el menú (navbar) cuando se clica en el símbolo de menú; es para tablets..
+ */
+function mostrarMenu() {
+  if (document.getElementById("menuBasico").style.display != "block") {
+    document.getElementById("menuBasico").style.display = "block";
+  } else {
+    document.getElementById("menuBasico").style.display = "none";
+  }
+}
+
+/**
  * Función básica que toma las variables del DOM y asigna eventos.
  */
 function cargarEventos() {
@@ -466,15 +477,6 @@ function cargarEventos() {
       mostrarCalculadoraFechas();
     });
 
-  //Aquí controlo el menú en tamaño medio:
-  //TODO mostrarMenu+ AÑADIR A README
-  document
-    .getElementById("menuBasicoIcono")
-    .addEventListener("click", function () {
-      mostrarMenu();
-    });
-
-
   //Datepickers:
   $(function () {
     $("#datepicker1").datepicker();
@@ -492,7 +494,10 @@ function cargarEventos() {
 
   //Aquí controlo que se muestre el historial a través de su botón, que sólo se mostrará en movil y tablet.
   var varBotonHistorial = document.getElementById("botonCalculadoraHistorial");
-  varBotonHistorial.addEventListener("click", function () {
-    mostrarHistorial();
-  });
+  varBotonHistorial.addEventListener("click", function() { mostrarHistorial(); });
+
+  //Aquí controlo que se muestr el menú a través de su botón en tablet.
+  var menuBasicoIcono = document.getElementById("menuBasicoIcono");
+  menuBasicoIcono.addEventListener("click", function() { mostrarMenu(); });
+   //TODO mostrarMenu+ AÑADIR A README
 }
