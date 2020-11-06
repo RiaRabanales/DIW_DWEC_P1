@@ -3,12 +3,9 @@
  * @author Maria Rabanales
  */
 
-//TODO: modificar para q esta variable no esté fuera de funciones
-var operacion = "";
-
-//TODO: modificar el menú para que me salga en vertical en medio tamaño
 //TODO formatear las fechas segun el enunciado
-//TODO: +- de num negativo en resultado no me lo varía
+//TODO q me muestre el body en pantalla completa vertical
+//TODO sombras verticales en el body para darle profundidad
 //TODO release al final desde github y añadirlo al doc del repositorio
 
 /**
@@ -18,10 +15,10 @@ var operacion = "";
  */
 function agregarValor(texto) {
   let operando = document.getElementById("operando").innerHTML;
-  if (comprobarSiOperacionPrevia()) {
+  let operacion = document.getElementById("operacion").innerHTML;
+  if (comprobarSiOperacionPrevia(operacion)) {
     operando = "";
     limpiarOperacion();
-    document.getElementById("operacion").innerHTML = operacion;
   }
   if (operando == 0) {
     operando = "";
@@ -54,9 +51,11 @@ function agregarDecimal() {
  * Comprueba si existe una operación previa guardada en memoria.
  * @returns {boolean} true si existe, false si no
  */
-function comprobarSiOperacionPrevia() {
-  if (operacion.includes("=") || operacion.includes("ERROR")) {
-    return true;
+function comprobarSiOperacionPrevia(operacion) {
+  if (operacion != null) {
+    if (operacion.includes("=") || operacion.includes("ERROR")) {
+      return true;
+    }
   }
   return false;
 }
@@ -89,6 +88,7 @@ function borrar() {
  * Realiza la operación de la tecla CE: borra último número completo introducido en el operando.
  */
 function borrarCe() {
+  let operacion = document.getElementById("operacion").innerHTML;
   if (operacion.slice(-1) == "=") {
     //Si el último término es un =, quiero que actúe como un C:
     borrarC();
@@ -103,7 +103,6 @@ function borrarCe() {
 function borrarC() {
   limpiarOperacion();
   document.getElementById("operando").innerHTML = 0;
-  document.getElementById("operacion").innerHTML = operacion;
 }
 
 /**
@@ -116,10 +115,10 @@ function agregarOperacion(texto) {
   operando = operando.replace(/<b>/, "");
   operando = operando.replace(/<\/b>/, "");
   operando = editarNegativo(operando);
-  if (comprobarSiOperacionPrevia()) {
-    limpiarOperacion();
+  let operacion = document.getElementById("operacion").innerHTML;
+  if (operacion.slice(-1) != ")") {
+    operacion += operando;
   }
-  operacion += operando;
   operacion += texto;
   document.getElementById("operacion").innerHTML = operacion;
   document.getElementById("operando").innerHTML = "";
@@ -132,8 +131,10 @@ function agregarCuadrado() {
   let operandoRaiz = document.getElementById("operando").innerHTML;
   operandoRaiz = operandoRaiz.replace(/<b>/, "");
   operandoRaiz = operandoRaiz.replace(/<\/b>/, "");
-  if (comprobarSiOperacionPrevia()) {
+  let operacion = document.getElementById("operacion").innerHTML;
+  if (comprobarSiOperacionPrevia(operacion)) {
     limpiarOperacion();
+    operacion = "";
   }
   operacion += "(";
   operacion += operandoRaiz;
@@ -180,7 +181,7 @@ function agregarRaiz() {
  * Limpia la operación.
  */
 function limpiarOperacion() {
-  operacion = "";
+  document.getElementById("operacion").innerHTML = "";
 }
 
 /**
@@ -188,12 +189,17 @@ function limpiarOperacion() {
  */
 function cambiarSigno() {
   let operandoSigno = document.getElementById("operando").innerHTML;
-  if (operandoSigno.charAt(0) == "-") {
-    operandoSigno = operandoSigno.substring(1); //TODO no me lo cambia en un resultado
-  } else {
-    operandoSigno = "-" + operandoSigno;
+  operandoSigno = operandoSigno.replace(/<b>/, "");
+  operandoSigno = operandoSigno.replace(/<\/b>/, "");
+  operandoSigno = operandoSigno.replace(/,/, ".");
+  if (operandoSigno != 0) {
+    if (operandoSigno < 0) {
+      operandoSigno = Math.abs(operandoSigno);
+    } else {
+      operandoSigno = "-" + operandoSigno;
+    }
+    document.getElementById("operando").innerHTML = operandoSigno;
   }
-  document.getElementById("operando").innerHTML = operandoSigno;
 }
 
 /**
@@ -203,7 +209,11 @@ function cambiarSigno() {
 function resolverOperacion() {
   let resultado;
   let operando = document.getElementById("operando").innerHTML;
-  operacion += operando;
+  let operacion = document.getElementById("operacion").innerHTML;
+  //Con esto me evito volver a añadir el operando en raiz y cuadrado:
+  if (operacion.slice(-1) != ")") {
+    operacion += operando;
+  }
   let operacionMath = operacion.replace(/ /g, "");
   operacionMath = operacionMath.replace(/,/g, ".");
   let divisionEntera = false; //así puedo hacer el round
@@ -225,7 +235,6 @@ function resolverOperacion() {
       }
     }
   } catch (err) {
-    console.log(err.message);
     resultado = "ERROR: sintaxis incorrecta";
   }
   operando = resultado.toString().replace(/\./g, ",");
@@ -487,17 +496,17 @@ function cargarEventos() {
   });
 
   //Aquí resuelvo el cálculo:
-  var varBotonFechas = document.getElementById("botonFechas");
-  varBotonFechas.addEventListener("click", function () {
+  document.getElementById("botonFechas").addEventListener("click", function () {
     resolverFechas();
   });
 
-  //Aquí controlo que se muestre el historial a través de su botón, que sólo se mostrará en movil y tablet.
-  var varBotonHistorial = document.getElementById("botonCalculadoraHistorial");
-  varBotonHistorial.addEventListener("click", function() { mostrarHistorial(); });
+  //Aquí controlo que se muestre el historial a través de su botón, sólo para movil y tablet.
+  document.getElementById("botonCalculadoraHistorial").addEventListener("click", function () {
+    mostrarHistorial();
+  });
 
-  //Aquí controlo que se muestr el menú a través de su botón en tablet.
-  var menuBasicoIcono = document.getElementById("menuBasicoIcono");
-  menuBasicoIcono.addEventListener("click", function() { mostrarMenu(); });
-   //TODO mostrarMenu+ AÑADIR A README
+  //Aquí controlo que se muestre el menú a través de su botón en tablet.
+  document.getElementById("menuBasicoIcono").addEventListener("click", function () {
+    mostrarMenu();
+  });
 }

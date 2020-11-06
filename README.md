@@ -50,7 +50,11 @@ En el ejemplo visual del enunciado la barra de navegación para pantalla de orde
 
 Para ordenadores el menú sólo tiene dos opciones: las de los tipos de calculadora.
 
-Para tablets y móviles el menú incluye también el botón que muestra u oculta el historial. Estéticamente el menú de tablets es casi idéntico al de ordenadores, pero el de móviles es muy diferente: el menú pasa a ocupar la posición de la cabecera. Si bien en el diseño original se planteaba colocarlo en dos líneas, en el diseño final de esta calculadora plantear un 'display: flex' con 'wrap' en dos líneas ocupaba demasiado espacio del disponible en una pantalla tan pequeña. Por este motivo se ha decidido colocarlo en una única línea.
+Para tablets y móviles el menú incluye también el botón que muestra u oculta el historial.
+
+En tablets, el menú comienza oculto para evitar "comer" espacio de pantalla. A la derecha de la cabecera, no obstante, aparece el icono tradicional de "menú", que si se pulsa despliega (en vertical) las tres opciones disponibles. Se ha jugado con :last-child para que sólo la opción inferior quede redondeada.
+
+En móviles, el menú pasa a ocupar la posición de la cabecera. Si bien en el diseño original se planteaba colocarlo en dos líneas, en el diseño final de esta calculadora plantear un 'display: flex' con 'wrap' en dos líneas ocupaba demasiado espacio del disponible en una pantalla tan pequeña. Por este motivo se ha decidido colocarlo en una única línea.
 
 ### Calculadora numérica:
 La calculadora tiene cuatro elementos: dos superiores (operación y operando) que muestran valores o cadenas de valores si procede, una botonera central, y un historial en la parte inferior. Se sitúa en el centro de la pantalla y sólo ocupa una fracción del cuerpo: hacerla más ancha resultaba levemente incómodo al tener que desplazar demasiado el ratón para avanzar de botón en botón.
@@ -92,7 +96,7 @@ Para el funcionamiento de las casillas de operación y de operando se ha decidid
 
 Así, cuando se introduce un valor numérico o una coma, este cambio se refleja en la casilla de operando. En la casilla de operación (la superior) no se refleja un número hasta que este está 'completo', es decir, hasta que se ha introducido un operador básico.
 
-La única excepción a esto es con '+-': el cambio de signo sí que se refleja en el número de la casilla de operando: si el operando es positivo se añade '-' al principio, y si es negativo, se quita el '-' del principio. Esto lo hace la función cambiarSigno().
+La única excepción a esto es con '+-': el cambio de signo sí que se refleja en el número de la casilla de operando: si el operando es positivo se añade '-' al principio, y si es negativo, se quita el '-' del principio al pasar al valor absoluto. Si es un 0 no hace nada. Esto lo hace la función cambiarSigno().
 
 Inicialmente aparece un 0 en la casilla de operando, pero se sustituye por la primera cifra introducida. Como excepción, si se introduce ',' este cero se mantiene y las siguientes cifras se añaden como decimales.
 
@@ -129,6 +133,7 @@ El documento html y el documento de estilos se ha comentado con indicadores de s
 
 # Mejoras en el código:
 Si bien estas mejoras se han descrito en los apartados correspondientes, incluyo aquí una lista de todos los 'extras' sobre el enunciado:
+* Tratamiento de los menús en versión tablet.
 * Tecla MOD para el módulo o resto de una división.
 * Tecla √ para raíz cuadrada.
 * Error por introducir una segunda ',' en un valor ya decimal.
