@@ -13,6 +13,8 @@ María Rabanales González
 * Javascript
 * JQuery (exclusivamente en el 'datepicker', y por necesidad)
 
+### Licencia:
+MIT, por su compatibilidad con muchas otras licencias.
 
 ## Consideraciones:
 
@@ -28,6 +30,8 @@ Siguiendo los requisitos del enunciado, se ha incluído un icono de FontAwesome 
 * El layout básico de la página se ha creado con flexbox, dirección columna: afecta a cabecera, cuerpo y pie de página.
 * Tanto la cabecera como el pie de página tienen a su vez display: flex, lo que permite controlar mejor la posición de sus subelementos.
 * La calculadora numérica en sí tiene una botonera creada con grid.
+
+El formato de los elementos 'exteriores' se ha mantenido con ángulos rectos, pero los elementos 'interiores' (las calculadoras, el historial, los operandos, los botones) se han redondeado con distintos valores de la propiedad css 'border-radius'.
 
 Las decisiones visuales que han definido las diferencias entre los medios han afectado básicamente a tres grupos de elementos: la cabecera y pie de página, el historial de operaciones, y el menú o barra de navegación.
 
@@ -45,6 +49,8 @@ En cualquier caso, y en todas las resoluciones, la aplicación tiene que ocupar 
 
 ### Historial
 El elemento historial siempre es visible en pantallas de ordenador, ya que las considero lo suficientemente amplias para que pueda verse sin problema y sin necesidad de realizar excesivo 'scrolling'. En el enunciado se indica que se muestre a la izquierda o debajo de la propia calculadora; dado que se ha considerado que resulta visualmente agradable y facilita la concentración que al mismo nivel de la calculadora no se vea más que fondo de pantalla se ha decidido colocar el historial debajo. Comienza indicando sólo el título del container, y se va completando con las diferentes operaciones.
+
+El historial se va ampliando hacia debajo conforme se van realizando operaciones, pero las operaciones más recientes siempre aparecen al principio, con lo que se facilita el repaso de las últimas operaciones al usuario.
 
 En pantallas de tablets y móviles el historial se muestra oculto de inicio. Es el propio usuario quien decide si quiere verlo, y selecciona la opción correspondiente para mostrarlo.
 
@@ -127,7 +133,9 @@ Siguiendo el ejemplo de la calculadora de Windows, se ha modificado levemente el
 En el historial se van incluyendo las operaciones realizadas, pero siempre en orden inverso: la operación más reciente aparece al principio, para facilitar su visualización.
 
 #### Calculadora de fechas:
-Hay dos casillas, desde y hasta, que debe rellenar el usuario. Las fechas están formateadas como días/mes/año, siguiendo el enunciado. La diferencia en días se muestra en la casilla de resolución.
+Hay dos casillas, desde y hasta, que debe rellenar el usuario. En la propia casilla de input las fechas están formateadas como días/mes/año, siguiendo el enunciado. Cuando se selecciona una fecha, esta se muestra sobre la casilla de input en formato 'dia de nombreMes de año', en castellano; esto se consigue con las funciones mostrarFechaElegida() y mostrarMes(). Se ha optado por esta solución frente a emplear localizadores de datepicker por un motivo básico, que es la necesidad de emplear JQuery avanzado para emplear opciones regionales. De haberse empleado localizador, se hubiera utilizado este: https://gist.github.com/edymerchk/ef51a0a79d65f7c6549a 
+
+La diferencia en días se muestra en la casilla de resolución, imitando el formato de la calculadora tradicional.
 
 Existen dos casos de error:
 * Por no haberse introducido una fecha necesaria para el cálculo (desde o hasta).

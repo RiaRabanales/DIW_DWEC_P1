@@ -5,8 +5,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Maria Rabanales - Pràctica 1</title>
-    <link rel="stylesheet" type="text/css" href="css/styles.css" />
-    <script src="js/scripts.js"></script>
 
     <!-- Google Font: -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet" />
@@ -19,6 +17,10 @@
     <!-- Da error y no es necesario: <link rel="stylesheet" href="/resources/demos/style.css" /> -->
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!-- Estilos y scripts propios: -->
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <script src="js/scripts.js"></script>
   </head>
 
   <body onload="cargarEventos()">
@@ -86,8 +88,10 @@
               <span class="explicacion">resultado en días</span>
             </div>
             <div class="operaciones">
-              <p><input type="text" id="datepicker1" /> inicio</p>
-              <p><input type="text" id="datepicker2" /> final</p>
+              <p><b>Inicio: </b><span id="textoDatepicker1"></span></p>
+              <input type="text" id="datepicker1" />
+              <p><b>Final: </b><span id="textoDatepicker2"></span></p>
+              <input type="text" id="datepicker2" />
               <p class="explicacion">
                 Formato de las fechas: <b>MM/DD/AAAA</b>
               </p>

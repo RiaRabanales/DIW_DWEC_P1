@@ -3,8 +3,6 @@
  * @author Maria Rabanales
  */
 
-//TODO centrar verticalmente la calculadora
-//TODO volver a mirar lo del formato de fecha, añadir localizacion a español
 //TODO release al final desde github y añadirlo al doc del repositorio
 
 /**
@@ -363,6 +361,69 @@ function resolverFechas() {
 }
 
 /**
+ * Realiza la conversión de la fecha a español y la muestra en el operando.
+ */
+function mostrarFechaElegida(tipo) {
+  if (tipo == 1) {
+    let fecha = document.getElementById("datepicker1").value.toString();
+    let texto = fecha.substring(0, 2) + " de " + mostrarMes(fecha.substring(3, 5))+ " de " + fecha.substring(6);
+    document.getElementById("textoDatepicker1").innerHTML = texto;
+  } else {
+    let fecha = document.getElementById("datepicker2").value.toString();
+    let texto = fecha.substring(0, 2) + " de " + mostrarMes(fecha.substring(3, 5))+ " de " + fecha.substring(6);
+    document.getElementById("textoDatepicker2").innerHTML = texto;
+  }
+}
+
+/**
+ * Convierte un mes numérico en su versión en español;
+ * sustituye el uso de los localizadores de datepicker, que requieren jquery más avanzado.
+ * @param {String} mes numérico
+ */
+function mostrarMes(mes) {
+  mesTexto = "";
+  switch (mes) {
+    case "01":
+      mesTexto = "enero";
+      break;
+    case "02":
+      mesTexto = "febrero";
+      break;
+    case "03":
+      mesTexto = "marzo";
+      break;
+    case "04":
+      mesTexto = "abril";
+      break;
+    case "05":
+      mesTexto = "mayo";
+      break;
+    case "06":
+      mesTexto = "junio";
+      break;
+    case "07":
+      mesTexto = "julio";
+      break;
+    case "08":
+      mesTexto = "agosto";
+      break;
+    case "09":
+      mesTexto = "septiembre";
+      break;
+    case "10":
+      mesTexto = "octubre";
+      break;
+    case "11":
+      mesTexto = "noviembre";
+      break;
+    case "04":
+      mesTexto = "diciembre";
+      break;
+  }
+  return mesTexto;
+}
+
+/**
  * Muestra el historial (tanto numérico como de fechas) cuando se selecciona por barra de navegación.
  */
 function mostrarHistorial() {
@@ -519,14 +580,27 @@ function cargarEventos() {
     });
 
   //Datepickers:
-  var opcionFecha = $.extend({}, { dateFormat: "dd/mm/yy" });
 
   $(function () {
-    $("#datepicker1").datepicker(opcionFecha).val();
+    $("#datepicker1")
+      .datepicker({
+        dateFormat: "dd/mm/yy",
+        onSelect: function () {
+          mostrarFechaElegida(1);
+        },
+      })
+      .val();
   });
 
   $(function () {
-    $("#datepicker2").datepicker(opcionFecha).val();
+    $("#datepicker2")
+      .datepicker({
+        dateFormat: "dd/mm/yy",
+        onSelect: function () {
+          mostrarFechaElegida(2);
+        },
+      })
+      .val();
   });
 
   //Aquí resuelvo el cálculo:
