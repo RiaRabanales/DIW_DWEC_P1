@@ -18,6 +18,10 @@
     box-sizing: border-box;
   }
 
+  main {
+    flex: 1;
+  }
+
   .notMobile,
   #menuBasicoIcono {
     display: none;
@@ -70,8 +74,10 @@
     box-sizing: border-box;
   }
 
-  body {
-    min-height: 100vh;
+  body > div {
+    margin: 0 auto;
+    width: 85vw;
+    min-height: 97vh;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -85,8 +91,7 @@
 
   /* Estilos de la cabecera: */
   header {
-    margin: 0 auto;
-    width: 80vw;
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -109,8 +114,9 @@
 
   /* Estilos generales del cuerpo: */
   main {
+    flex: 1;
     margin: 0 auto;
-    width: 80vw;
+    width: 100%;
     border: 3px solid var(--main-color);
     box-sizing: border-box;
   }
@@ -180,7 +186,7 @@
     border: 3px solid var(--main-color);
     box-sizing: border-box;
     border-radius: 20px;
-    max-width: 40vw;
+    max-width: 35vw;
     box-shadow: 2px 2px 4px 5px #ccc;
   }
 }
@@ -193,11 +199,14 @@
     box-sizing: border-box;
   }
 
-  body {
-    min-height: 100vh;
+  body > div {
+    margin: 0 auto;
+    min-height: 97vh;
+    width: 80vw;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+    box-shadow: 2px 2px 3px 4px #ddd;
   }
 
   header,
@@ -208,8 +217,7 @@
 
   /* Estilos de la cabecera: */
   header {
-    margin: 0 auto;
-    width: 80vw;
+    width: 100%;
     max-height: 4.4rem;
     display: flex;
     flex-direction: row;
@@ -232,8 +240,9 @@
 
   /* Estilos generales del cuerpo: */
   main {
+    flex: 1;
     margin: 0 auto;
-    width: 80vw;
+    width: 100%;
     border: 3px solid var(--main-color);
     box-sizing: border-box;
   }
@@ -282,7 +291,8 @@
     border: 3px solid var(--main-color);
     box-sizing: border-box;
     border-radius: 20px;
-    max-width: 30vw;
+    min-width: 38%;
+    max-width: 40%;
     box-sizing: border-box;
     box-shadow: 3px 3px 5px 6px #ccc;
   }
@@ -309,7 +319,7 @@
 #calculadoraNumeros > .resultados {
   cursor: none;
   background-color: var(--secondary-color);
-  padding: 0.5rem;
+  padding: 0.3rem;
   box-sizing: border-box;
 }
 
@@ -382,7 +392,7 @@
 footer {
   max-height: 3.3em;
   margin: 0 auto;
-  width: 80vw;
+  width: 100%;
   padding: 0.5rem;
   box-sizing: border-box;
   display: flex;

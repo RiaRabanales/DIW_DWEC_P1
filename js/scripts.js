@@ -3,9 +3,8 @@
  * @author Maria Rabanales
  */
 
-//TODO formatear las fechas segun el enunciado
-//TODO q me muestre el body en pantalla completa vertical
-//TODO sombras verticales en el body para darle profundidad
+//TODO centrar verticalmente la calculadora
+//TODO volver a mirar lo del formato de fecha, añadir localizacion a español
 //TODO release al final desde github y añadirlo al doc del repositorio
 
 /**
@@ -39,7 +38,11 @@ function agregarDecimal() {
     if (comprobarSiOperacionPrevia()) {
       limpiarOperacion();
     }
-    operando += ",";
+    if (operando == "") {
+      operando = "0,";
+    } else {
+      operando += ",";
+    }
   } else {
     operando = "ERROR: " + operando + " ya es decimal";
     editarHistorial(operando);
@@ -90,7 +93,7 @@ function borrar() {
 function borrarCe() {
   let operacion = document.getElementById("operacion").innerHTML;
   if (operacion.slice(-1) == "=") {
-    //Si el último término es un =, quiero que actúe como un C:
+    //Si el último término es un = quiero que actúe como C:
     borrarC();
   } else {
     document.getElementById("operando").innerHTML = 0;
@@ -116,7 +119,10 @@ function agregarOperacion(texto) {
   operando = operando.replace(/<\/b>/, "");
   operando = editarNegativo(operando);
   let operacion = document.getElementById("operacion").innerHTML;
-  if (operacion.slice(-1) != ")") {
+  if (comprobarSiOperacionPrevia(operacion)) {
+    operacion = operando;
+    operando = "";
+  } else if (operacion.slice(-1) != ")") {
     operacion += operando;
   }
   operacion += texto;
@@ -153,21 +159,26 @@ function agregarCuadrado() {
  * Incluye y resuelve la raiz cuadrada de un valor.
  */
 function agregarRaiz() {
-  if (comprobarSiOperacionPrevia()) {
-    limpiarOperacion();
-  }
   let operandoVal = document.getElementById("operando").innerHTML;
   operandoVal = operandoVal.replace(/<b>/, "");
   operandoVal = operandoVal.replace(/<\/b>/, "");
   operandoVal = operandoVal.replace(/,/, ".");
+  let operacion = document.getElementById("operacion").innerHTML;
+  if (comprobarSiOperacionPrevia(operacion)) {
+    limpiarOperacion();
+    operacion = "";
+  }
   if (operandoVal >= 0) {
     let sqrtResult = Math.sqrt(operandoVal);
-    operandoVal = sqrtResult.toString().replace(/\./g, ",");
+    operandoVal = operandoVal.toString().replace(/\./g, ",");
+    operacion += "r(";
     operacion += operandoVal;
-    document.getElementById("operando").innerHTML = operandoVal;
+    operacion += ")";
+    sqrtResult = sqrtResult.toString().replace(/\./g, ",");
+    document.getElementById("operando").innerHTML = sqrtResult;
   } else {
     operandoVal = operandoVal.toString().replace(/\./g, ",");
-    operacion = "sqrt(" + operandoVal + ") =";
+    operacion = "r(" + operandoVal + ") =";
     document.getElementById("operando").innerHTML =
       "ERROR: raiz de número negativo";
     editarHistorial("sqrt(" + operandoVal + ") = ERROR: NaN");
@@ -221,6 +232,9 @@ function resolverOperacion() {
     operacionMath = operacionMath.replace(/\/\//, "/");
     divisionEntera = true;
   }
+  while (operacionMath.includes("r(")) {
+    operacionMath = calcularRaiz(operacionMath);
+  }
   operacion += " = ";
   try {
     if (operacion.includes(", ")) {
@@ -228,7 +242,7 @@ function resolverOperacion() {
     } else {
       resultado = eval(operacionMath);
       if (divisionEntera) {
-        resultado = Math.round(resultado); //TODO: eso me vale si sólo hay una operación y es esta
+        resultado = Math.round(resultado);
       }
       if (resultado == Infinity) {
         resultado = "ERROR: operación no válida";
@@ -241,6 +255,23 @@ function resolverOperacion() {
   document.getElementById("operacion").innerHTML = operacion;
   document.getElementById("operando").innerHTML = "<b>" + operando + "</b>";
   editarHistorial(operacion + operando);
+}
+
+/**
+ * Simplifica la función de resolución: toma un string con una raiz, calcula la raiz, y devuelve el string.
+ * Existe porque no puedo pasar sqrt() a eval(): lo calculo por separado.
+ * @param {String} operacion
+ */
+function calcularRaiz(operacion) {
+  let operacionConRaiz = operacion.substring(0, operacion.indexOf("r"));
+  operacion = operacion.substring(operacion.indexOf("r"));
+  let raiz = operacion.substring(
+    operacion.indexOf("(") + 1,
+    operacion.indexOf(")")
+  );
+  operacionConRaiz += Math.sqrt(Number(raiz));
+  operacionConRaiz += operacion.substring(operacion.indexOf(")") + 1);
+  return operacionConRaiz;
 }
 
 /**
@@ -258,12 +289,13 @@ function comprobarDecimal(texto) {
 }
 
 /**
- * Añade la última operación al historial y lo muestra por pantalla.
+ * Añade la última operación al historial y lo muestra por pantalla en orden inverso.
+ * (Las operaciones más recientes se muestran al principio.)
  * @param {String} ultimaOperacion refleja la operación que se quiere añadir.
  */
 function editarHistorial(ultimaOperacion) {
-  //TODO: mejorar la muestra de esto: que me incluya las últimas operaciones no al final sino al principio
-  document.getElementById("historial").innerHTML += ultimaOperacion + "<br>";
+  document.getElementById("historial").innerHTML =
+    ultimaOperacion + "<br>" + document.getElementById("historial").innerHTML;
 }
 
 /**
@@ -352,7 +384,7 @@ function mostrarHistorial() {
 }
 
 /**
- * Muestra el menú (navbar) cuando se clica en el símbolo de menú; es para tablets..
+ * Muestra el menú (navbar) cuando se clica en el símbolo de menú; es para tablets.
  */
 function mostrarMenu() {
   if (document.getElementById("menuBasico").style.display != "block") {
@@ -487,12 +519,14 @@ function cargarEventos() {
     });
 
   //Datepickers:
+  var opcionFecha = $.extend({}, { dateFormat: "dd/mm/yy" });
+
   $(function () {
-    $("#datepicker1").datepicker();
+    $("#datepicker1").datepicker(opcionFecha).val();
   });
 
   $(function () {
-    $("#datepicker2").datepicker();
+    $("#datepicker2").datepicker(opcionFecha).val();
   });
 
   //Aquí resuelvo el cálculo:
@@ -501,12 +535,16 @@ function cargarEventos() {
   });
 
   //Aquí controlo que se muestre el historial a través de su botón, sólo para movil y tablet.
-  document.getElementById("botonCalculadoraHistorial").addEventListener("click", function () {
-    mostrarHistorial();
-  });
+  document
+    .getElementById("botonCalculadoraHistorial")
+    .addEventListener("click", function () {
+      mostrarHistorial();
+    });
 
   //Aquí controlo que se muestre el menú a través de su botón en tablet.
-  document.getElementById("menuBasicoIcono").addEventListener("click", function () {
-    mostrarMenu();
-  });
+  document
+    .getElementById("menuBasicoIcono")
+    .addEventListener("click", function () {
+      mostrarMenu();
+    });
 }

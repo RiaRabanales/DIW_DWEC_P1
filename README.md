@@ -38,6 +38,11 @@ La cabecera incluye la imagen aportada inicialmente por el enunciado (redondeada
 
 El pie de página muestra a la izquierda el nombre del autor, y a la derecha el link a Github, con un icono adecuado.
 
+En cualquier caso, y en todas las resoluciones, la aplicación tiene que ocupar la totalidad de la página vertical. Esto se ha conseguido trabajando con display: flex en el body, dando valores de altura mínima tanto a la cabecera como al pie de página, y haviendo variable el 'main' con: 
+  main {
+    flex: 1;
+  }
+
 ### Historial
 El elemento historial siempre es visible en pantallas de ordenador, ya que las considero lo suficientemente amplias para que pueda verse sin problema y sin necesidad de realizar excesivo 'scrolling'. En el enunciado se indica que se muestre a la izquierda o debajo de la propia calculadora; dado que se ha considerado que resulta visualmente agradable y facilita la concentración que al mismo nivel de la calculadora no se vea más que fondo de pantalla se ha decidido colocar el historial debajo. Comienza indicando sólo el título del container, y se va completando con las diferentes operaciones.
 
@@ -119,8 +124,10 @@ En la botonera, aparte de los botones de contenido numérico, de las teclas de b
 
 Siguiendo el ejemplo de la calculadora de Windows, se ha modificado levemente el concepto 'reset' de la calculadora. Si al calcular una expresión se devuelve una cifra o un error, se borra el contenido del operando y se sustituye por lo que se haya devuelto. En el operador, no obstante, se muestra la operación completa que ha dado este resultado: así facilita al usuario ver y recordar cómo ha llegado al mismo.
 
+En el historial se van incluyendo las operaciones realizadas, pero siempre en orden inverso: la operación más reciente aparece al principio, para facilitar su visualización.
+
 #### Calculadora de fechas:
-Hay dos casillas, desde y hasta, que debe rellenar el usuario. La diferencia en días se muestra en la casilla de resolución.
+Hay dos casillas, desde y hasta, que debe rellenar el usuario. Las fechas están formateadas como días/mes/año, siguiendo el enunciado. La diferencia en días se muestra en la casilla de resolución.
 
 Existen dos casos de error:
 * Por no haberse introducido una fecha necesaria para el cálculo (desde o hasta).
