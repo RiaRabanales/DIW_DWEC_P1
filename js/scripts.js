@@ -242,7 +242,7 @@ function resolverOperacion() {
       if (divisionEntera) {
         resultado = Math.round(resultado);
       }
-      if (resultado == Infinity) {
+      if (resultado == Infinity || Number.isNaN(resultado)) {
         resultado = "ERROR: operación no válida";
       }
     }
