@@ -345,16 +345,16 @@ function resolverFechas() {
         fechaResult + " día";
     } else if (fechaResult < 0) {
       textoFechas =
-        "ERROR: hasta anterior a desde<br>(en " + fecha1 + " - " + fecha2 + ")";
+        "<b>ERROR:</b> hasta anterior a desde<br>(en " + fecha1 + " - " + fecha2 + ")";
       document.getElementById("operacionFecha").innerHTML =
-        "ERROR: hasta anterior a desde";
+        "<b>ERROR:</b> hasta anterior a desde";
     } else {
       textoFechas += fechaResult + " días.";
       document.getElementById("operacionFecha").innerHTML =
         "<b>" + fechaResult + "</b> días";
     }
-    document.getElementById("historialFechas").innerHTML +=
-      textoFechas + "<br>";
+    document.getElementById("historialFechas").innerHTML =
+      textoFechas + "<br>" + document.getElementById("historialFechas").innerHTML;
   } else {
     document.getElementById("operacionFecha").innerHTML = "ERROR: falta fecha";
   }
